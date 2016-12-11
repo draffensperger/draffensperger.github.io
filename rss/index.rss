@@ -1,0 +1,510 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Dave Raffensperger</title><description>Software engineer. Ruby, Go, JS, Java. Algorithms and productivity. Opinions are my own.</description><link>https://davidraff.com/</link><generator>Ghost 0.11</generator><lastBuildDate>Sat, 10 Dec 2016 21:29:36 GMT</lastBuildDate><atom:link href="https://davidraff.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Optimize your schedule</title><description>&lt;p&gt;Drowning in projects, appointments and deadlines?&lt;/p&gt;
+
+&lt;p&gt;My newly built personal scheduler, &lt;a href="https://wizweek.com"&gt;wizweek.com&lt;/a&gt; is here to help! It maximizes your impact given your deadlines and appointments, and syncs your optimized schedule to Google calendar.&lt;/p&gt;
+
+&lt;p&gt;You identify your larger tasks, give each a time estimate and a business value estimate, plus&lt;/p&gt;</description><link>https://davidraff.com/optimize-your-schedule/</link><guid isPermaLink="false">3364e46c-14d2-4d7f-8d29-80c37be5318b</guid><category>angularjs</category><category>go</category><category>python</category><dc:creator>Dave Raffensperger</dc:creator><pubDate>Sat, 27 Aug 2016 18:38:15 GMT</pubDate><content:encoded>&lt;p&gt;Drowning in projects, appointments and deadlines?&lt;/p&gt;
+
+&lt;p&gt;My newly built personal scheduler, &lt;a href="https://wizweek.com"&gt;wizweek.com&lt;/a&gt; is here to help! It maximizes your impact given your deadlines and appointments, and syncs your optimized schedule to Google calendar.&lt;/p&gt;
+
+&lt;p&gt;You identify your larger tasks, give each a time estimate and a business value estimate, plus optimally a deadline and earliest start date.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="https://davidraff.com/content/images/2016/08/Screenshot-2016-08-27-13-17-31.png" alt=""&gt;&lt;/p&gt;
+
+&lt;p&gt;You also choose one of your Google calendars to be your "tasks" calendar and one to be your "appointments" calendar.&lt;/p&gt;
+
+&lt;p&gt;When you click "Optimize my schedule!" WizWeek will form your optimal schedule (or inform you that you are overcommitted!) It will then sync it to your tasks calendar.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="https://davidraff.com/content/images/2016/08/Screenshot-2016-08-27-13-35-16.png" alt=""&gt;&lt;/p&gt;
+
+&lt;h2 id="howitworks"&gt;How it works&lt;/h2&gt;
+
+&lt;p&gt;WizWeek allows you to set up a weekly work schedule, e.g. 9am-5pm Monday to Friday. It will only schedule your tasks within those hours, and only when you don't have a meeting on your appointments calendar.&lt;/p&gt;
+
+&lt;p&gt;Within those remaining free work hours, it will first prioritize a schedule where you will meet your deadlines. For remaining flexibility in your work schedule, it will put the highest impact tasks first as measured by business value per hour. It will also make sure not to schedule a task until it's minimum start date if specified.&lt;/p&gt;
+
+&lt;p&gt;WizWeek currently only allows time estimates for tasks to be one hour or more. The thinking is that you would use a separate list for all your shorter tasks. Then you could create a single larger task like "Small tasks" and add it to your list to schedule some time in your week.&lt;/p&gt;
+
+&lt;h2 id="inspiration"&gt;Inspiration&lt;/h2&gt;
+
+&lt;p&gt;My dad was the direct inspiration for this tool; each week he organizes his tasks on a spreadsheet that will optimize them then syncs that to his Outlook calendar&lt;sup id="fnref:1"&gt;&lt;a href="https://davidraff.com/optimize-your-schedule/#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;But this approach accords with what I've read from productivity experts. David Allen has championed the idea of doing a "weekly review" of your commitments&lt;sup id="fnref:2"&gt;&lt;a href="https://davidraff.com/optimize-your-schedule/#fn:2" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;, and Matt Perman emphasized that "time is like space" and that we need to put commitments on a schedule to avoid overload&lt;sup id="fnref:3"&gt;&lt;a href="https://davidraff.com/optimize-your-schedule/#fn:3" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;h2 id="technicaldetails"&gt;Technical details&lt;/h2&gt;
+
+&lt;p&gt;WizWeek is composed of three main components, all of which are open sourced on GitHub.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/draffensperger/wizweek-web"&gt;wizweek-web&lt;/a&gt; is an AngularJS single page application for wizweek.com itself. It interacts with Google API's to do the authentication and calendar synchronization.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/draffensperger/wizweek-scheduler"&gt;wizweek-scheduler&lt;/a&gt; is a Go web service that does the schedule optimization using a linear program that it calls via &lt;a href="https://github.com/draffensperger/golp"&gt;golp&lt;/a&gt;, my Go wrapper for the LPSolve C library.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/draffensperger/wizweek-api"&gt;wizweek-api&lt;/a&gt; is a Python API that allows wizweek.com to store tasks and settings data in the Google Cloud Datastore.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you like the service, let me know. I welcome suggestions and even code contributions to improve it.&lt;/p&gt;
+
+&lt;h2 id="footnotes"&gt;Footnotes&lt;/h2&gt;
+
+&lt;div class="footnotes"&gt;&lt;ol&gt;&lt;li class="footnote" id="fn:1"&gt;&lt;p&gt;You can read about his Excel spreadsheet and download a copy for yourself at his website &lt;a href="https://davidraff.com/optimize-your-schedule/john.raffensperger.org"&gt;john.raffensperger.org&lt;/a&gt;. &lt;a href="https://davidraff.com/optimize-your-schedule/#fnref:1" title="return to article"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li class="footnote" id="fn:2"&gt;&lt;p&gt;“What do you do the last week before you leave on a big trip? You clean up, close up, clarify, and renegotiate all your agreements with yourself and others. I just suggest that you do this weekly instead of yearly.” David Allen of &lt;em&gt;Getting Things Done&lt;/em&gt; &lt;a href="https://davidraff.com/optimize-your-schedule/#fnref:2" title="return to article"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li class="footnote" id="fn:3"&gt;&lt;p&gt;“Just as there is only so much stuff we can fit into our closets, so also there is only so much stuff we can fit into our days. If we don't think in terms of a basic schedule ... we end up in overload.” Matt Perman of &lt;em&gt;What's Best Next&lt;/em&gt; &lt;a href="https://davidraff.com/optimize-your-schedule/#fnref:3" title="return to article"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;</content:encoded></item><item><title>Hosting a text-to-speech service on Heroku</title><description>&lt;p&gt;&lt;em&gt;Using &lt;a href="https://github.com/draffensperger/marytts-http"&gt;marytts-http&lt;/a&gt;, you can 
+easily host a multilingual open source text-to-speech service on Heroku and restrict requests with HMAC-SHA256.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;In college, I made a &lt;a href="https://github.com/draffensperger/memorizer"&gt;vocab memorizer&lt;/a&gt; and used &lt;a href="http://mary.dfki.de/"&gt;MaryTTS&lt;/a&gt; for speech synthesis to learn the correct German pronunciations.&lt;/p&gt;
+
+&lt;p&gt;MaryTTS is an &lt;a href="https://github.com/marytts/marytts"&gt;open-source&lt;/a&gt; multilingual text-to-speech library in Java, but it doesn't&lt;/p&gt;</description><link>https://davidraff.com/text-to-speech-service-on-heroku/</link><guid isPermaLink="false">ab77aea8-53a4-4bab-b30f-006e4e2c8a9e</guid><category>java</category><dc:creator>Dave Raffensperger</dc:creator><pubDate>Sun, 02 Aug 2015 20:12:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;em&gt;Using &lt;a href="https://github.com/draffensperger/marytts-http"&gt;marytts-http&lt;/a&gt;, you can 
+easily host a multilingual open source text-to-speech service on Heroku and restrict requests with HMAC-SHA256.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;In college, I made a &lt;a href="https://github.com/draffensperger/memorizer"&gt;vocab memorizer&lt;/a&gt; and used &lt;a href="http://mary.dfki.de/"&gt;MaryTTS&lt;/a&gt; for speech synthesis to learn the correct German pronunciations.&lt;/p&gt;
+
+&lt;p&gt;MaryTTS is an &lt;a href="https://github.com/marytts/marytts"&gt;open-source&lt;/a&gt; multilingual text-to-speech library in Java, but it doesn't expose a convenient and easy to deploy web service. So I recently built &lt;a href="https://github.com/draffensperger/marytts-http"&gt;marytts-http&lt;/a&gt;, to wrap it as a Java servlet using &lt;a href="http://www.eclipse.org/jetty/"&gt;Jetty&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can deploy it to Heroku like this (assuming you have their &lt;a href="https://toolbelt.heroku.com/"&gt;toolbelt&lt;/a&gt; and logged in):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;git clone https://github.com/draffensperger/marytts-http  
+cd marytts-http  
+heroku create  
+git push heroku master  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Heroku will perform a Maven build for MaryTTS with English and German voices. You can then try the service by specifying &lt;code&gt;text&lt;/code&gt; and &lt;code&gt;locale&lt;/code&gt; and visiting e.g. &lt;code&gt;[your-marytts-app].herokuapp.com/?text=Hallo&amp;amp;locale=de&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id="securingrequests"&gt;Securing requests&lt;/h2&gt;
+
+&lt;p&gt;You can secure your service by setting the &lt;code&gt;HMAC_SECRET&lt;/code&gt; (Base64 encoded) environment variable. To generate a random 32-byte key and set it on Heroku run:  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;heroku config:set HMAC_SECRET=`cat /dev/urandom | head -c 32 | base64`  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You will need to sign the requests using HMAC-SHA256, and you can also specify the &lt;code&gt;expires&lt;/code&gt; parameter to make the signed request only last a specified period of time. The &lt;br&gt;
+&lt;a href="https://github.com/draffensperger/marytts-http#securing-requests"&gt;marytts-http readme&lt;/a&gt; has the details and see below for a Rails code example.&lt;/p&gt;
+
+&lt;h2 id="usingitinarailsapp"&gt;Using it in a Rails app&lt;/h2&gt;
+
+&lt;p&gt;One way to use this in a Rails app would be via the &lt;code&gt;&amp;amp;lt;audio&amp;amp;gt;&lt;/code&gt; tag. Assuming you have a view helper, &lt;code&gt;marytts_url&lt;/code&gt;, this snippet would caused your page to say "Hallo" in German using your text-to-speech service:  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;&amp;lt;%= audio_tag(marytts_url('Hallo', locale: :de), autoplay: true) %&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The view helper to construct and sign the URL with for the service could look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;module MaryttsHelper  
+  @@marytts_key = Base64.decode64(Rails.application.secrets.marytts_key)
+  @@marytts_host = Rails.application.secrets.marytts_host
+
+  def marytts_url(text, opts={})
+    # Expiry time is represented as a unix timestamp
+    opts[:expires] = opts[:expires].to_i if opts[:expires].present?
+
+    params_to_sign_in_order = [:text, :locale, :gender, :voice, :style, 
+                               :effects, :expires]
+    params = opts.merge(text: text).slice(*params_to_sign_in_order)
+    sign_url(@@marytts_key, @@marytts_host, params)
+  end
+
+  private
+
+  def sign_url(key, base_url, params)
+    param_values = params.values.map(&amp;amp;:to_s).reduce('', :+)
+    signature = hmac_sha256(param_values, key)
+    URI.join(base_url, '/?' + params.merge(signature: signature).to_query).to_s
+  end
+
+  def hmac_sha256(data, key)
+    digest = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), key, data)
+    Base64.encode64(digest).strip
+  end
+end  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You would set &lt;code&gt;marytts_host&lt;/code&gt; and &lt;code&gt;marytts_key&lt;/code&gt; in &lt;code&gt;secrets.yml&lt;/code&gt; to be &lt;br&gt;
+&lt;code&gt;[your-marytts-app].herokuapp.com&lt;/code&gt; and your &lt;code&gt;HMAC_KEY&lt;/code&gt; above respectively.&lt;/p&gt;
+
+&lt;p&gt;Here's a &lt;a href="https://github.com/draffensperger/memorizer/blob/master/public/mary_embed.php"&gt;PHP code example&lt;/a&gt; of how to embed a marytts-http link as well.&lt;/p&gt;
+
+&lt;h2 id="whataboutfrenchitalianswedishrussianturkishandtelugu"&gt;What about French, Italian, Swedish, Russian, Turkish, and Telugu?&lt;/h2&gt;
+
+&lt;p&gt;MaryTTS supports those languages too! By modifying the marytts-http &lt;a href="https://github.com/draffensperger/marytts-http/pom.xml"&gt;Maven build script&lt;/a&gt;, we could add language and voice packages for them. A list of the voices is in the (non-user-friendly) MaryTTS &lt;a href="https://github.com/marytts/marytts/blob/master/download/marytts-components.xml"&gt;components.xml&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="howdoesitactuallysound"&gt;How does it actually sound?&lt;/h2&gt;
+
+&lt;p&gt;The German "bits3-hsmm" and English "cmu-slt-hsmm" voices included in marytts-http are space efficient (under 3MB total) but sound a bit tinny:&lt;/p&gt;
+
+&lt;audio src="https://davidraff.s3.amazonaws.com/audio/cmu-slt-hsmm-welcome.wav" controls preload="none"&gt;&lt;/audio&gt;  
+
+&lt;p&gt;&lt;em&gt;"Welcome to the world of speech synthesis!"&lt;/em&gt;&lt;/p&gt;
+
+&lt;audio src="https://davidraff.s3.amazonaws.com/audio/bits3-hsmm-welcome.wav" controls preload="none"&gt;&lt;/audio&gt;  
+
+&lt;p&gt;&lt;em&gt;"Willkommen in der Welt der Sprachsynthese!"&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;If we used more space for the German "dfki-pavoque-neutral" (425MB) and the British English "dfki-spike" (129MB) voices, the quality would be better:&lt;/p&gt;
+
+&lt;audio src="https://davidraff.s3.amazonaws.com/audio/dfki-spike-higher-quality.wav" controls preload="none"&gt;&lt;/audio&gt;  
+
+&lt;p&gt;&lt;em&gt;"This voice is higher quality."&lt;/em&gt;&lt;/p&gt;
+
+&lt;audio src="https://davidraff.s3.amazonaws.com/audio/dfki-pavoque-neutral-qualitaetvoller.wav" controls preload="none"&gt;&lt;/audio&gt;  
+
+&lt;p&gt;&lt;em&gt;"Diese Stimme ist qualitätvoller."&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;But given the Heroku slug size limit of 300MB, and the increased RAM needed for those voices, deploying them may take more work and larger dyno sizes.&lt;/p&gt;
+
+&lt;p&gt;To try out the various voices and languages, you can &lt;a href="http://mary.dfki.de/download/index.html"&gt;download MaryTTS&lt;/a&gt;, run their component installer to get the voices and run a local MaryTTS server which provides a web interface for you to interact with the system.&lt;/p&gt;
+
+&lt;h2 id="othertexttospeechoptions"&gt;Other text-to-speech options&lt;/h2&gt;
+
+&lt;p&gt;There are several hosted text-to-speech web services by &lt;a href="http://www.ispeech.org/api#tts"&gt;iSpeech&lt;/a&gt;, &lt;br&gt;
+&lt;a href="http://developer.att.com/apis/speech"&gt;AT&amp;amp;T Speech API&lt;/a&gt;, 
+&lt;a href="http://www.ivona.com/us/for-business/speech-cloud/"&gt;Ivona (Amazon)&lt;/a&gt;, or &lt;a href="https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/text-to-speech/"&gt;IBM&lt;/a&gt;, and depending on your app needs, a managed API service may be best for you.&lt;/p&gt;</content:encoded></item><item><title>Calling a Linear Solver C Library from Go</title><description>&lt;p&gt;&lt;em&gt;I wrote the &lt;a href="https://github.com/draffensperger/golp"&gt;golp&lt;/a&gt; library to
+provide Go bindings via &lt;a href="https://golang.org/cmd/cgo/"&gt;cgo&lt;/a&gt; for the &lt;a href="http://sourceforge.net/projects/lpsolve/"&gt;LP_Solve&lt;/a&gt; open source Mixed Integer Linear Programming (MILP) solver.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id="thegluebetweengoandc"&gt;The glue between Go and C&lt;/h2&gt;
+
+&lt;p&gt;Here's the part of golp's &lt;a href="https://github.com/draffensperger/golp/blob/master/lp.go"&gt;lp.go&lt;/a&gt; that let's it compile for and link to LP Solve's C library:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-go"&gt;/*
+#cgo linux&lt;/code&gt;&lt;/pre&gt;</description><link>https://davidraff.com/calling-a-linear-solver-c-library-from-go/</link><guid isPermaLink="false">1cf84819-3b63-4858-8687-4de2347885ee</guid><category>go</category><category>algorithms</category><dc:creator>Dave Raffensperger</dc:creator><pubDate>Sun, 02 Aug 2015 20:12:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;em&gt;I wrote the &lt;a href="https://github.com/draffensperger/golp"&gt;golp&lt;/a&gt; library to
+provide Go bindings via &lt;a href="https://golang.org/cmd/cgo/"&gt;cgo&lt;/a&gt; for the &lt;a href="http://sourceforge.net/projects/lpsolve/"&gt;LP_Solve&lt;/a&gt; open source Mixed Integer Linear Programming (MILP) solver.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id="thegluebetweengoandc"&gt;The glue between Go and C&lt;/h2&gt;
+
+&lt;p&gt;Here's the part of golp's &lt;a href="https://github.com/draffensperger/golp/blob/master/lp.go"&gt;lp.go&lt;/a&gt; that let's it compile for and link to LP Solve's C library:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-go"&gt;/*
+#cgo linux CFLAGS: -I./lpsolve
+#cgo linux LDFLAGS: -L./lpsolve -llpsolve55 -Wl,-rpath=./lpsolve
+#cgo darwin CFLAGS: -I/opt/local/include/lpsolve
+#cgo darwin LDFLAGS: -L/opt/local/lib -llpsolve55
+#include "lp_lib.h"
+...
+*/
+import "C"  
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;import "C"&lt;/code&gt; is similar to a normal Go import in that it brings in the &lt;code&gt;C&lt;/code&gt; package with functions you can call, but cgo also interprets the comment above &lt;code&gt;import "C"&lt;/code&gt; in a special way as follows.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;#cgo&lt;/code&gt; lines with &lt;code&gt;CFLAGS&lt;/code&gt; and &lt;code&gt;LDFLAGS&lt;/code&gt; specify flags for the C compiler and linker respectively. The &lt;code&gt;darwin&lt;/code&gt; and &lt;code&gt;linux&lt;/code&gt; are Go &lt;a href="https://golang.org/pkg/go/build/#hdr-Build_Constraints"&gt;build constraints&lt;/a&gt; that specify which platform those flags apply to.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;linux&lt;/code&gt; flags indicate that the compiler should search &lt;code&gt;./lpsolve&lt;/code&gt; for the header and library file, and the &lt;code&gt;-Wl-rpath=./lpsolve&lt;/code&gt; will cause the resulting executable to search the &lt;code&gt;./lpsolve&lt;/code&gt; folder for &lt;code&gt;lpsolve55.so&lt;/code&gt; to dynamically link to it. The Darwin build flags are designed to work with the version of LPSolve that will be installed by MacPorts.&lt;/p&gt;
+
+&lt;p&gt;After the &lt;code&gt;#cgo&lt;/code&gt; lines, the rest of the comment is interpreted as a snippet of C code, which can include headers and can even define new functions in C for the  Go code to call.&lt;/p&gt;
+
+&lt;h3 id="usingctypes"&gt;Using C types&lt;/h3&gt;
+
+&lt;p&gt;With the initial glue in place, we can reference C types with &lt;code&gt;C.[any type defined in your C snippet]&lt;/code&gt;. For instance, golp's wrapper &lt;code&gt;LP&lt;/code&gt; type looks like this, where &lt;code&gt;lprec&lt;/code&gt; is the type name for a linear program instance in LP Solve:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-go"&gt;type LP struct {  
+  ptr *C.lprec
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="callingcfunctions"&gt;Calling C functions&lt;/h3&gt;
+
+&lt;p&gt;Calling C functions from Go is also as easy as calling &lt;code&gt;C.[c function]&lt;/code&gt;. Here's golp's &lt;code&gt;NewLP&lt;/code&gt; that returns a new linear program instance by calling &lt;code&gt;C.make_lp&lt;/code&gt; (where &lt;code&gt;make_lp&lt;/code&gt; is a function in &lt;code&gt;lp_lib.h&lt;/code&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-go"&gt;func NewLP(rows, cols int) *LP {  
+  l := new(LP)
+  l.ptr = C.make_lp(C.int(rows), C.int(cols))
+  runtime.SetFinalizer(l, deleteLP)
+  ...
+  return l
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notice the &lt;code&gt;runtime.SetFinalizer&lt;/code&gt; call. In Go, objects are garbage collected, so we don't need to explicitly free them, but &lt;code&gt;make_lp&lt;/code&gt; is a C function and allocates memory outside of Go's garbage-collecting watch. Thus we should free it by calling LP Solve's &lt;code&gt;delete_lp&lt;/code&gt; (which the Go wrapper &lt;code&gt;deleteLP&lt;/code&gt; does). &lt;/p&gt;
+
+&lt;p&gt;The effect of doing the delete in the finalizer is that we can now use the Go &lt;code&gt;LP&lt;/code&gt; wrapper object without needing to worry about calling the cleanup function explicitly as the Go runtime will call it right before it garbage collects the wrapper object.&lt;/p&gt;
+
+&lt;p&gt;Another thing to note are the type casts like &lt;code&gt;C.int(rows)&lt;/code&gt;, which are needed because &lt;code&gt;int&lt;/code&gt; in Go and C are considered different types and could be different sizes depending on the platform and compilers.&lt;/p&gt;
+
+&lt;h2 id="installinggolp"&gt;Installing golp&lt;/h2&gt;
+
+&lt;p&gt;To use the golp library, you'll need to:&lt;/p&gt;
+
+&lt;h4 id="1getthegolpgocode"&gt;1. Get the golp Go code&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;go get github.com/draffensperger/golp  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="2getlpsolve"&gt;2. Get LPSolve&lt;/h4&gt;
+
+&lt;p&gt;For Linux, download the build from &lt;a href="http://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/"&gt;SourceForge&lt;/a&gt; and extract it to &lt;code&gt;./lpsolve&lt;/code&gt;. E.g. for 64-bit,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-bash"&gt;LP_URL=https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/lp_solve_5.5.2.0_dev_ux64.tar.gz  
+mkdir lpsolve  
+curl -L $LP_URL | tar xvz -C lpsolve  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For OS X, install &lt;a href="https://www.macports.org/"&gt;MacPorts&lt;/a&gt; then &lt;code&gt;sudo port install lp_solve&lt;/code&gt;. There are Windows builds &lt;a href="http://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/"&gt;on SourceForge&lt;/a&gt; as well.&lt;/p&gt;
+
+&lt;h2 id="usingitinyourproject"&gt;Using it in your project&lt;/h2&gt;
+
+&lt;p&gt;Here's a sample program that uses &lt;code&gt;golp&lt;/code&gt; to solve a simple linear program, &lt;br&gt;
+based on an example from the &lt;a href="http://lpsolve.sourceforge.net/5.5/formulate.htm"&gt;LPSolve documentation&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-go"&gt;package main
+
+import "fmt"  
+import "github.com/draffensperger/golp"
+
+func main() {  
+  lp := golp.NewLP(0, 2) // 0 rows by 2 columns
+  lp.AddConstraint([]float64{110.0, 30.0}, golp.LE, 4000.0)
+  lp.AddConstraint([]float64{1.0, 1.0}, golp.LE, 75.0)
+  lp.SetObjFn([]float64{143.0, 60.0})
+  lp.SetMaximize()
+
+  lp.Solve()
+  vars := lp.Variables()
+  fmt.Printf("Plant %.3f acres of barley\n", vars[0])
+  fmt.Printf("And  %.3f acres of wheat\n", vars[1])
+  fmt.Printf("For optimal profit of $%.2f\n", lp.Objective())
+
+  // No need to explicitly free underlying C structure as
+  // golp.LP finalizer will
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Outputs:  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Plant 21.875 acres of barley  
+And  53.125 acres of wheat  
+For optimal profit of $6315.62  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="otherlinearprogrammingoptionsforgo"&gt;Other Linear Programming options for Go&lt;/h2&gt;
+
+&lt;p&gt;LPSolve is &lt;a href="http://lpsolve.sourceforge.net/5.5/LGPL.htm"&gt;LGPL licensed&lt;/a&gt;, which allows it to be called from closed-source projects. It also supports solving mixed-integer programming problems (where some variables must be integers) using branch-and-bound. See the &lt;a href="https://github.com/draffensperger/golp"&gt;golp README&lt;/a&gt; for an mixed-integer example.&lt;/p&gt;
+
+&lt;p&gt;There are also Go bindings for the GPL-licensed &lt;a href="http://www.gnu.org/software/glpk/"&gt;GNU Linear Programming Kit (GLPK)&lt;/a&gt; at &lt;a href="https://github.com/lukpank/go-glpk"&gt;github.com/lukpank/go-glpk&lt;/a&gt;, which would be suitable if your project has a GPL-compatible open source license.&lt;/p&gt;
+
+&lt;p&gt;There are a number of other commercial and open-source solvers like CBC, CLP, GLOP, Gurobi, CPLEX, SCIP, and Sulum. Google provides a unified SWIG compatible C++ interface for all those solvers in their &lt;a href="https://github.com/google/or-tools"&gt;or-tools&lt;/a&gt; project.&lt;/p&gt;
+
+&lt;p&gt;There is Go support &lt;a href="http://www.swig.org/Doc2.0/Go.html"&gt;for SWIG bindings&lt;/a&gt;, so it should be possible to write a wrapper that would connect to those other solvers via the or-tools library. It would involve some additional glue code compared to calling a C library with cgo though.&lt;/p&gt;</content:encoded></item><item><title>Tame internet distraction: three tips</title><description>Tools to focus online: internet router schedule, InboxPause, and Nanny for Google Chrome</description><link>https://davidraff.com/tame-internet-distraction-three-tips/</link><guid isPermaLink="false">23b8d7d5-dac2-478e-9a84-fac193bea936</guid><dc:creator>Dave Raffensperger</dc:creator><pubDate>Thu, 01 Jan 2015 22:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;em&gt;Email, social media and the internet generally are great tools for good. But creating an automated schedule for all three helps me be more effective.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Walter Mischel's "marshmallow experiments" found that kids who waited for two marshmallows used "strategic allocation of attention" (covering eyes, playing elsewhere, etc.) to keep from the tempting single marshmallow.&lt;sup id="fnref:1"&gt;&lt;a href="https://davidraff.com/tame-internet-distraction-three-tips/#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; Jesus likewise instructed his disciples to "watch and pray that you may not enter into temptation." (Matthew 26:41a).&lt;/p&gt;
+
+&lt;p&gt;The character to live and serve effectively requires God's grace by the Holy Spirit and we should regularly express that dependence in prayer. Tools like these though can help us "watch" better.&lt;/p&gt;
+
+&lt;h2 id="1checkemailtwicedayviainboxpause"&gt;1. Check email twice/day via InboxPause&lt;/h2&gt;
+
+&lt;p&gt;I used to constantly peruse my email which interrupted my work and wasted energy as I'd think about those messages I procrastinated dealing with.&lt;/p&gt;
+
+&lt;p&gt;Then I heard about &lt;a href="https://davidraff.com/tame-internet-distraction-three-tips/inboxpause.com"&gt;InboxPause&lt;/a&gt;, which stores emails in a hidden Gmail label and moves them to the inbox on a schedule. I can still click a couple times and open that label, but impulsive email checks don't show messages, so the temptation to constantly peruse email is a lot lower.&lt;/p&gt;
+
+&lt;p&gt;I get emails at 8am and 4pm, and on work days I try to clear my inbox before the emails arrive again. I follow the spirit of David Allen's two-minute rule from &lt;a href="http://www.amazon.com/Getting-Things-Done-Stress-Free-Productivity/dp/0142000280"&gt;"Getting Things Done"&lt;/a&gt;:  I immediately do/drop/delegate quick things and defer longer tasks to a to-do list.&lt;/p&gt;
+
+&lt;p&gt;Tricks to make this sustainable:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I added a Gmail filter so emails from cru.org accounts, HipChat and GitHub go to a special label which allows me to give timely responses to coworkers without seeing the rest of my emails.&lt;sup id="fnref:2"&gt;&lt;a href="https://davidraff.com/tame-internet-distraction-three-tips/#fn:2" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;If I need to see a specific email (e.g. a verification email from a site or want to see if someone replied before I do some action), I'll search just for that message.&lt;/li&gt;
+&lt;li&gt;If I'm expecting a reply to a message that needs a timely response, I'll move that conversation to the inbox (rather than archive) so I'd see a new message in it right away.&lt;/li&gt;
+&lt;li&gt;I give myself grace when I still procrastinate emails (or more rarely, raid the label). But I keep the automated rhythm set up and I find it helps me back to healthy email habits.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="2scheduleinternetcutoffviarouter"&gt;2. Schedule internet cut-off via router&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;"Be regular and orderly in your life like a bourgeois, so that you may be violent and original in your work." - Gustave Flaubert&lt;sup id="fnref:3"&gt;&lt;a href="https://davidraff.com/tame-internet-distraction-three-tips/#fn:3" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Knowledge workers often have great flexibility, which, when undirected, leads to confusion and reduced effectiveness. A daily routine provides one tool to structure the important things of life. &lt;/p&gt;
+
+&lt;p&gt;One "marshmallow" that has often kept me from disciplined routines is staying up late using the computer doing unimportant tasks or lazily browsing the web.&lt;/p&gt;
+
+&lt;p&gt;To create routine, I cut internet to my tablet, phone and computer at 9:30pm. All but my tablet get it at 6am, but my iPad doesn't until 10am. That let's me put my iPad next to my bed to read the Bible and my prayer list in the morning without the internet distracting me. (I keep other &lt;br&gt;
+devices out of the bedroom).&lt;/p&gt;
+
+&lt;p&gt;Here's how to set up an internet cut-off routine:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If you're a hacker, use my setup: &lt;a href="https://openwrt.org/"&gt;OpenWRT&lt;/a&gt;, static IP per  device and &lt;a href="http://wiki.openwrt.org/doc/uci/firewall#block_access_to_the_internet_for_specific_ip_on_certain_times"&gt;time based firewall rules&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Home routers may let you schedule internet limits&lt;/li&gt;
+&lt;li&gt;Use an &lt;a href="http://www.amazon.com/401A-Mechanical-Multiple-Lighting-Polarized/dp/B00435FRXS"&gt;electric outlet timer&lt;/a&gt; for your router &lt;/li&gt;
+&lt;li&gt;Accountability software may have internet limiting features&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If I really need internet after 9:30pm, I'll use my wife's computer or in an extreme, tether to my phone - but both remind me I'm breaking routine. &lt;/p&gt;
+
+&lt;h2 id="3limitsocialmediaviachromeextension"&gt;3. Limit social media via Chrome extension&lt;/h2&gt;
+
+&lt;p&gt;There's value in keeping up with friends, news and tech, but media sites can become distractions and time sinks. I don't visit Facebook much, &lt;br&gt;
+but I've poured many would-be productive hours into &lt;a href="https://news.ycombinator.com"&gt;Hacker News&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So I set up &lt;a href="https://chrome.google.com/webstore/detail/cljcgchbnolheggdgaeclffeagnnmhno"&gt;Nanny for Google Chrome&lt;/a&gt; to only allow access to the site between 8am and 8:45am. That way it won't interfere with my earlier quiet time or later workday, and it can be a reward for getting through the 8am emails. When I miss that window (common since our baby!), I tell myself that as the day is progessing there are more important things to do.&lt;/p&gt;
+
+&lt;p&gt;I could still use a different browser, disable the extension, etc., but those extra steps make self-control easier. (And I do permit myself to view it on my phone when I'm out). Other extensions that do similar things though seemed a bit less flexible are &lt;a href="https://chrome.google.com/webstore/detail/laankejkbhbdhmipfmgcngdelahlfoji"&gt;Stay Focusd&lt;/a&gt;, and &lt;a href="https://chrome.google.com/webstore/detail/pfglnpdpgmecffbejlfgpnebopinlclj"&gt;SiteBlock&lt;/a&gt;. You can configure limited amounts of time instead of set windows if you prefer as well.&lt;/p&gt;
+
+&lt;p&gt;Ultimately, these boundaries display my limits in focus, time and energy. And they call me to depend on my limitless Creator. &lt;/p&gt;
+
+&lt;h2 id="footnotes"&gt;Footnotes&lt;/h2&gt;
+
+&lt;div class="footnotes"&gt;&lt;ol&gt;&lt;li class="footnote" id="fn:1"&gt;&lt;p&gt;"Mischel’s conclusion, based on hundreds of hours of observation, was that the crucial skill was the 'strategic allocation of attention.' Instead of getting obsessed with the marshmallow—the 'hot stimulus'—the patient children distracted themselves by covering their eyes, pretending to play hide-and-seek underneath the desk, or singing songs from 'Sesame Street.'  Their desire wasn’t defeated—it was merely forgotten."  — &lt;a href="http://www.newyorker.com/magazine/2009/05/18/dont-2"&gt;"Don’t! The secret of self-control" (newyorker.com)&lt;/a&gt; &lt;a href="https://davidraff.com/tame-internet-distraction-three-tips/#fnref:1" title="return to article"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li class="footnote" id="fn:2"&gt;&lt;p&gt;My main Gmail filter for emails from coworkers (Skip Inbox, Apply Label "*Internal") looks like this: &lt;em&gt;from:(@cru.org -quickread@cru.org) to:(nickname.last@cru.org OR name.last@cru.org)&lt;/em&gt;&amp;nbsp; The "-quickread@cru.org" makes Quick Read list messages get stored in the regular inbox pause box rather than going to my "*Internal" label. I have two email aliases, and the OR clauses captures both. &lt;a href="https://davidraff.com/tame-internet-distraction-three-tips/#fnref:2" title="return to article"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li class="footnote" id="fn:3"&gt;&lt;p&gt;This was originally in a letter he wrote (&lt;a href="http://en.wikiquote.org/wiki/Gustave_Flaubert"&gt;according to Wikiquote&lt;/a&gt;), but I saw it quoted in a page about the &lt;a href="https://podio.com/site/creative-routines"&gt;"The Daily Routines of Famous Creative People" (podio.com)&lt;/a&gt;. &lt;a href="https://davidraff.com/tame-internet-distraction-three-tips/#fnref:3" title="return to article"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;</content:encoded></item><item><title>CSS Source Maps in Octopress</title><description>To customize an Octopress theme, I used CSS Sourcemaps with Compass and Sass.</description><link>https://davidraff.com/css-source-maps-octopress/</link><guid isPermaLink="false">22a91a6c-b73d-4f50-b4b3-caf5284d5007</guid><dc:creator>Dave Raffensperger</dc:creator><pubDate>Mon, 06 Jan 2014 00:16:00 GMT</pubDate><content:encoded>&lt;p&gt;I wanted to customize the theme for this [formerly] &lt;a href="//octopress.org/"&gt;Octopress&lt;/a&gt; blog &lt;br&gt;
+and so I used Google Chrome's "Inspect Element" feature to view styles - but &lt;br&gt;
+they are all from screen.css which is compiled from the &lt;a href="//sass-lang.com"&gt;Sass&lt;/a&gt; sources, so I wouldn't immediately know which .scss file to edit.&lt;/p&gt;
+
+&lt;p&gt;But Chrome supports &lt;a href="https://developers.google.com/chrome-developer-tools/docs/css-preprocessors"&gt;CSS Source Maps&lt;/a&gt; which lets you trace styles back to their source. In the Chrome developer tool go to "Settings" (gear in the lower right) and click "Enable CSS source maps".&lt;/p&gt;
+
+&lt;p&gt;To generate the source maps for Octopress you'll need to use the &lt;br&gt;
+pre-release versions of the &lt;a href="https://github.com/chriseppstein/compass"&gt;Compass&lt;/a&gt; and &lt;a href="https://github.com/nex3/sass"&gt;Sass&lt;/a&gt; gems, so set these Gem versions in the &lt;code&gt;Gemfile&lt;/code&gt; to:  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;gem 'compass', '~&amp;gt; 1.0.0.alpha.17'  
+gem 'sass', '~&amp;gt; 3.3.0.rc.2'  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next you'll need to go into &lt;code&gt;Rakefile&lt;/code&gt; and edit the &lt;code&gt;task :preview&lt;/code&gt; section &lt;br&gt;
+and replace the &lt;code&gt;compassPid = ...&lt;/code&gt; line with:  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-ruby"&gt;compassPid = Process.spawn("bundle exec sass --compass --sourcemap " +  
+  "--watch sass/screen.scss:#{public_dir}/stylesheets/screen.css")
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That will create a &lt;code&gt;screen.css.map&lt;/code&gt; file which will be served to Chrome and &lt;br&gt;
+the "Inspect Element" tool now shows the source .scss file as below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="https://davidraff.com/content/images/2016/03/css_sourcemaps.png" alt="Chrome Dev. Tool with CSS Source Maps"&gt;&lt;/p&gt;
+
+&lt;p&gt;Clicking link for e.g. &lt;code&gt;blog.scss&lt;/code&gt; won't bring you to the file &lt;br&gt;
+because the .scss files aren't served. If you want to, you can add a symlink in the "public" folder back to the "sass" folder, by typing &lt;br&gt;
+&lt;code&gt;ln -s ../sass public&lt;/code&gt; (though Jekyll will delete the symlink when it regenerates the site). I added this command to the &lt;code&gt;preview&lt;/code&gt; rake task
+and then delete the link in the &lt;code&gt;deploy&lt;/code&gt; task. See my my customized &lt;br&gt;
+&lt;a href="https://gist.github.com/draffensperger/8277201"&gt;Rakefile&lt;/a&gt; for details. &lt;/p&gt;</content:encoded></item><item><title>Fuzzy Matching in PHP and Excel</title><description>I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.</description><link>https://davidraff.com/fuzzy-match-php-excel/</link><guid isPermaLink="false">56ce17e3-3bcd-4f2a-bd6a-f5c885da78e5</guid><dc:creator>Dave Raffensperger</dc:creator><pubDate>Sat, 26 Oct 2013 23:59:00 GMT</pubDate><content:encoded>&lt;p&gt;This summer as part of a tutoring program in South Africa we needed to link &lt;br&gt;
+manually entered names and test scores with our master spreadsheet. I &lt;br&gt;
+&lt;a href="https://gist.github.com/draffensperger/7176944"&gt;created an Excel VBA function&lt;/a&gt; to match the names by combining exact search by full or first/last name and then using character count comparisons and Levenshtein distance to match misspelled names.&lt;/p&gt;
+
+&lt;script defer src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt;
+&lt;/script&gt;
+
+&lt;figure style="float:right"&gt;  
+  &lt;img class="img-responsive dark-border" src="https://davidraff.com/content/images/2016/03/kids_pretest.jpg" width="400" height="261" alt="Kids taking pre-test"&gt;
+  &lt;figcaption&gt;South African students taking the math pretest&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;The trip itself was amazing - our team of US college students got to partner with the &lt;a href="http://mamelodi.org/"&gt;The Mamelodi Initiative&lt;/a&gt; to tutor 8th-10th graders and in our free time we hung out with our African friends, discussed how the message of Jesus relates to serving others and had some awesome adventures!&lt;/p&gt;
+
+&lt;p&gt;Each year the tutoring program has better tracked student achievement through pre- and post-tests. Part of my role was to help manage the program's data which for various reasons is stored in a large Excel spreadsheet.&lt;/p&gt;
+
+&lt;p&gt;We had a volunteers help enter the math pretest names and scores in a separate spreadsheet (perhaps a mistake in retrospect). Misspellings between the score sheets and our master spreadsheet inevitably resulted as "Mahlemone" became "Molemone" and "Kgomotso" was entered as "Khomotso."&lt;/p&gt;
+
+&lt;p&gt;I remembered that I had written &lt;a href="https://github.com/draffensperger/memorizer/blob/master/test.php#L753"&gt;PHP code for string alignment and edit distance&lt;/a&gt; which I used in a &lt;a href="http://vocab-memorizer.herokuapp.com//test.php?MemorySetID=1"&gt;vocabulary training site&lt;/a&gt; I wrote in college. The dynamic programming &lt;a href="http://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm"&gt;Needleman-Wunsch algorithm&lt;/a&gt; does the alignment and the resulting similarity metric is directly related to &lt;a href="http://en.wikipedia.org/wiki/Levenshtein_distance"&gt;Levenshtein distance&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;PHP alignment function excerpt (&lt;a href="https://github.com/draffensperger/memorizer/blob/master/test.php#L753"&gt;full source&lt;/a&gt;):  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-php"&gt;function getStringAlignment($str1, $str2) {  
+  // Set up variables and calculate edit distance matrix $D
+  ... 
+
+  // Main backtracking loop
+  while ($i &amp;gt; 0 &amp;amp;&amp;amp; $j &amp;gt; 0) {
+    $charSimilarity = char_similarity($str1[$i - 1], $str2[$j - 1]);
+    if ($D[$i][$j] - $charSimilarity == $D[$i - 1][$j - 1]) {
+      if ($charSimilarity &amp;gt; 0) {
+        // A matched character
+        $align = 'M';                     
+      } else {
+        // A changed character
+        $align = 'C';
+      }            
+      $i--;
+      $j--;
+      $score += $charSimilarity;
+    } else if ($D[$i][$j] - $gap_score == $D[$i][$j - 1]) {
+      // Skipped in str2, i.e. str1 added it
+      $align = 'A';
+      $j--;
+      $score += $gap_score;
+    } else if ($D[$i][$j] - $gap_score == $D[$i - 1][$j]) {
+      // Skipped in str1, i.e. str1 deleted it
+      $align = 'D';
+      $i--;            
+      $score += $gap_score;   
+    }
+    $alignment = $align . $alignment;
+  }
+
+  // Record added or deleted letters for the rest of the unfinished string
+  ...
+
+  return array($alignment, $score);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I &lt;a href="https://gist.github.com/draffensperger/7176944#file-fuzzy_name_lookup-bas-L354"&gt;translated the algorithm to Excel VBA script&lt;/a&gt; to compare the names for our tutoring program pretest. It worked great, but it was painfully slow to compare all 200 names in our test scores list with the 1000 or so names in our master sheet because the alignment algorithm takes &lt;script type="math/tex"&gt;\operatorname{O}(length_{string1}length_{string2})&lt;/script&gt; time while a simple string comparison takes &lt;script type="math/tex"&gt;\operatorname{O}(min(length_{string1}, length_{string2}))&lt;/script&gt; time.&lt;/p&gt;
+
+&lt;p&gt;To speed up the matching overall, I had it try exact full name matches first &lt;br&gt;
+and then filter for exact first or last name matches. Then I had it do a simple unordered number of characters comparison to see if a name match was way off, and only if the number of characters was similar would it do the slower to compute Levenshtein distance comparison. I also had it try reversing first and last names as that sometimes happened in our data set.&lt;/p&gt;
+
+&lt;p&gt;Here's an excerpt of the lookup loop, which calculates the edit &lt;br&gt;
+distance only when needed (&lt;a href="https://gist.github.com/draffensperger/7176944#file-fuzzy_person_lookup-bas-L272"&gt;full source&lt;/a&gt;):  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class="language-vbnet"&gt;For i = firstRow To lastRow  
+    valInList = list.Cells(i, 1).Value
+
+    'For performance sake check the length, space location and unordered similarity first
+    'before running the edit distance algorithm
+    If Abs(Len(valInList) - Len(searchStr)) / Len(searchStr) _
+          &amp;lt; LEN_RATIO_NOMATCH_THRESHOLD Then
+        If Abs(InStr(searchStr, " ") - InStr(valInList, " ")) / Len(searchStr) _
+              &amp;lt; STR_LOC_NOMATCH_THRESHOLD Then
+            If UnorderedSimilarity(searchStr, valInList) / Len(searchStr) _
+                  &amp;gt; UNORDERED_SIM_NOMATCH_THRESHOLD Then
+                sim = LevenshteinDistance(searchStr, valInList)
+                If sim &amp;gt; maxSim Then
+                    maxSim = sim
+                    maxSimI = i
+                End If
+            End If
+        End If
+    End If
+Next  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After doing this, the majority of names matched and all I had to do manually &lt;br&gt;
+was sanity check them and fix a few here and there. It was a lot more fun &lt;br&gt;
+to do this as a programming exercise than to search for them one-by-one!&lt;/p&gt;
+
+&lt;p&gt;There's also a StackOverflow post with some other &lt;a href="http://stackoverflow.com/questions/4243036/levenshtein-distance-in-excel"&gt;Levenshtein distance implementations for Excel&lt;/a&gt; with some speed tune-ups.&lt;/p&gt;</content:encoded></item><item><title>Securing your Online Identity</title><description>After a recent hack I now use a password manager, 2-Factor authentication and a separate email for banks and e-commerce.</description><link>https://davidraff.com/securing-online-identity/</link><guid isPermaLink="false">d2f7f7ca-d7d2-4b5a-97ff-0c914796d47e</guid><dc:creator>Dave Raffensperger</dc:creator><pubDate>Wed, 17 Jul 2013 19:17:00 GMT</pubDate><content:encoded>&lt;p&gt;TL;DR: after a recent hack I now use a password manager, 2-Factor authentication and a separate email for banks and trusted e-commerce.&lt;/p&gt;
+
+&lt;p&gt;An old @aol.com email account of ours was compromised by spammers which sparked a month-long process of securing our online accounts. These are my thoughts.&lt;/p&gt;
+
+&lt;h2 id="useapasswordmanager"&gt;Use a password manager&lt;/h2&gt;
+
+&lt;p&gt;If someone guesses your password or reset questions, they're in. Also, there have been attacks on sites like &lt;a href="http://allthingsd.com/20130426/livingsocial-hacked-more-than-50-million-customer-names-emails-birthdates-and-encrypted-passwords-accessed/"&gt;LivingSocial&lt;/a&gt;, &lt;a href="http://evernote.com/corp/news/password_reset.php"&gt;Evernote&lt;/a&gt;, and &lt;a href="http://blog.linkedin.com/2012/06/06/linkedin-member-passwords-compromised/"&gt;LinkedIn&lt;/a&gt; that let attackers access scrambled passwords. They can unscramble them by guessing possible passwords and applying the scrambler (called a cryptographic hash) until it matches&lt;sup id="fnref:1"&gt;&lt;a href="https://davidraff.com/securing-online-identity/#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; and then they try that password in other sites.&lt;/p&gt;
+
+&lt;p&gt;So make your passwords unguessable and unique, at least for important sites like email and banks. A password manager lets you just memorize one long master password and stores the rest. There's a remote chance the manager could be compromised, but weigh that against having easy to break passwords or keeping them all in your head.&lt;/p&gt;
+
+&lt;p&gt;There are web password managers like &lt;a href="https://lastpass.com/"&gt;LastPass&lt;/a&gt; and &lt;a href="http://www.passpack.com/"&gt;PassPack&lt;/a&gt;, but I prefer a free and open source offline one called &lt;a href="http://keepass.info/"&gt;KeePass&lt;/a&gt;, and I use &lt;a href="https://www.dropbox.com"&gt;DropBox&lt;/a&gt; to sync my password database across computers. I'd suggest remembering at least your email and work passwords as well in case you can't get to the password manager. I also make my password reset questions random and store those in it.&lt;/p&gt;
+
+&lt;h2 id="use2factorauthentication"&gt;Use 2-Factor Authentication&lt;/h2&gt;
+
+&lt;p&gt;Even if you're passwords are random and you're careful, it's possible a hacker could somehow capture a password. Two factor authentication would stop such an attacker because they would need that  "second factor" to get in, which is usually a code from a smart phone app or text message. Most services that do this let you remember your device / browser so it won't keep asking for the login codes.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://support.google.com/accounts/answer/180744?hl=en"&gt;Google&lt;/a&gt;, &lt;a href="http://support.apple.com/kb/ht5570"&gt;Apple&lt;/a&gt;, &lt;a href="https://blog.twitter.com/2013/getting-started-login-verification"&gt;Twitter&lt;/a&gt;, &lt;a href="http://blogs.office.com/b/microsoft-outlook/archive/2013/04/17/outlook-com-gets-two-step-verification-sign-in-by-alias-and-new-international-domains.aspx"&gt;Microsoft's Outlook.com&lt;/a&gt;, and &lt;a href="https://www.facebook.com/note.php?note_id=10150172618258920"&gt;Facebook&lt;/a&gt; 
+offer 2-factor authentication and the list keeps growing. I'd recommend it for your email address and for the rest, balance your fear of getting hacked with possible inconvenience.&lt;/p&gt;
+
+&lt;h2 id="useseparateemailaddressforhighlysecuresites"&gt;Use separate email address for highly secure sites&lt;/h2&gt;
+
+&lt;p&gt;If your email is compromised, an attacker can access to sites that allow you to reset your password by email. Also, if there's sensitive data in your archived online emails, the attacker would have that too.&lt;/p&gt;
+
+&lt;p&gt;So I use a separate email address just for my banks and trusted e-commerce sites. That way an attacker can't use my regular email (were it hacked) as a verification step to reset passwords or get any financial info like my account's last 4 digits or transaction notices.&lt;/p&gt;
+
+&lt;p&gt;I would recommend a separate email address for sites you really want to keep secure especially if an emailed link is part of the password reset process for that site. I enable 2-factor authentication for my separate email and I make it so I need to enter the 2-factor code each time I log in.&lt;/p&gt;
+
+&lt;h2 id="bevigilant"&gt;Be vigilant&lt;/h2&gt;
+
+&lt;p&gt;Probably the most common way to capture your login info is via "phishing," that is tricking you to click on a link that looks like the real site to entice you to enter your password; &lt;a href="http://theonion.github.io/blog/2013/05/08/how-the-syrian-electronic-army-hacked-the-onion/"&gt;The Syrian Electronic Army used this to hack the Onion&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So you should avoid clicking on suspicious links and check that the URL in the browser matches the real site's URL before you enter you username and password.&lt;/p&gt;
+
+&lt;p&gt;Ultimately, if someone really wants to hack you and has sufficient resources, they'll probably find a way. But the more you protect yourself, &lt;br&gt;
+the less likely you'll be to unwittingly send inappropriate ads to your friends.&lt;/p&gt;
+
+&lt;div class="footnotes"&gt;&lt;ol&gt;&lt;li class="footnote" id="fn:1"&gt;&lt;p&gt;&lt;a href="http://arstechnica.com/security/2013/05/how-crackers-make-minced-meat-out-of-your-passwords/"&gt;How crackers ransack passwords like “qeadzcwrsfxv1331” (arstechnica.com)&lt;/a&gt; &lt;a href="https://davidraff.com/securing-online-identity/#fnref:1" title="return to article"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;</content:encoded></item></channel></rss>

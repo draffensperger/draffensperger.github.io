@@ -1,0 +1,463 @@
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Hosting a text-to-speech service on Heroku</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Hosting a text-to-speech service on Heroku">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:url" content="https://davidraff.com">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Hosting a text-to-speech service on Heroku">  
+    <meta property="og:description" content="">
+    <meta property="og:site_name" content="Dave Raffensperger">
+
+    <meta itemprop="name" content="Hosting a text-to-speech service on Heroku">
+    <meta itemprop="description" content="">
+
+    <meta name="twitter:site" content="@draffensperger">
+
+<meta name="twitter:creator" content="@draffensperger">
+
+<meta property="article:author" content="https://www.facebook.com/david.raffensperger">
+
+<meta property="article:publisher" content="https://www.facebook.com/david.raffensperger">
+
+<meta property="fb:admins" content="">
+
+<meta name="google-site-verification" content="">
+
+<link rel="author" href="https://plus.google.com/+DavidRaffensperger1">
+
+<meta name="theme-color" content="">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="../assets/images/apple-icon-57x57.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="60x60" href="../assets/images/apple-icon-60x60.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="72x72" href="../assets/images/apple-icon-72x72.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/images/apple-icon-76x76.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="114x114" href="../assets/images/apple-icon-114x114.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="120x120" href="../assets/images/apple-icon-120x120.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="144x144" href="../assets/images/apple-icon-144x144.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="152x152" href="../assets/images/apple-icon-152x152.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-icon-180x180.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-icon-192x192.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon-96x96.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png?v=cc3ce6961d">
+    <link rel="manifest" href="https://davidraff.com/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="https://fonts.googleapis.com/" rel="dns-prefetch">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400&amp;subset=latin,latin-ext" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/screen.css?v=cc3ce6961d">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+      var ga_ua = 'UA-42570145-1';
+
+var disqus_shortname = 'draffensperger';
+
+var enable_pjax = false;
+
+      // Pace Options
+      // ==============
+      window.paceOptions = {
+        catchupTime: 100,
+        minTime: 100,
+        elements: false,
+        restartOnRequestAfter: 500,
+        startOnPageLoad: false
+      }
+
+      // Ghostium Globals
+      // ==============
+      window.GHOSTIUM = {};
+      GHOSTIUM.haveGA = typeof ga_ua !== 'undefined' && ga_ua !== 'UA-XXXXX-X';
+      GHOSTIUM.haveDisqus = typeof disqus_shortname !== 'undefined' && disqus_shortname !== 'example';
+      GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
+    </script>
+
+    <script src="../assets/js/head-scripts.min.js?v=cc3ce6961d"></script>
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Dave Raffensperger">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Hosting a text-to-speech service on Heroku">
+    <meta property="og:description" content="I wrote the golp library to provide Go bindings via cgo for the LP_Solve open source Mixed Integer Linear Programming (MILP) solver. The glue between Go and C Here's the part of golp's lp.go that let's it compile for and link to LP Solve's C library: /* #cgo linux">
+    <meta property="og:url" content="https://davidraff.com/calling-a-linear-solver-c-library-from-go/">
+    <meta property="article:published_time" content="2015-08-02T20:12:00.000Z">
+    <meta property="article:modified_time" content="2016-03-01T12:52:00.000Z">
+    <meta property="article:tag" content="go">
+    <meta property="article:tag" content="algorithms">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Hosting a text-to-speech service on Heroku">
+    <meta name="twitter:description" content="I wrote the golp library to provide Go bindings via cgo for the LP_Solve open source Mixed Integer Linear Programming (MILP) solver. The glue between Go and C Here's the part of golp's lp.go that let's it compile for and link to LP Solve's C library: /* #cgo linux">
+    <meta name="twitter:url" content="https://davidraff.com/calling-a-linear-solver-c-library-from-go/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Dave Raffensperger">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="go, algorithms">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Dave Raffensperger",
+        "logo": "https://davidraff.com/content/images/2016/03/dave_head_280_90.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Dave Raffensperger",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "https://davidraff.com/author/dave/",
+        "sameAs": [],
+        "description": "Software engineer. Ruby, Go, JS, Java. Algorithms and productivity."
+    },
+    "headline": "Hosting a text-to-speech service on Heroku",
+    "url": "https://davidraff.com/calling-a-linear-solver-c-library-from-go/",
+    "datePublished": "2015-08-02T20:12:00.000Z",
+    "dateModified": "2016-03-01T12:52:00.000Z",
+    "keywords": "go, algorithms",
+    "description": "I wrote the golp library to provide Go bindings via cgo for the LP_Solve open source Mixed Integer Linear Programming (MILP) solver. The glue between Go and C Here&#x27;s the part of golp&#x27;s lp.go that let&#x27;s it compile for and link to LP Solve&#x27;s C library: /* #cgo linux",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://davidraff.com"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Dave Raffensperger" href="../rss/index.html">
+  </head>
+  <body class="post-template tag-go tag-algorithms">
+
+    <button data-action="open-drawer" id="drawer-button" class="drawer-button"><i class="fa fa-bars"></i></button>
+<nav tabindex="-1" class="drawer">
+  <div class="drawer-container">
+    <!--.drawer-search(role="search")-->
+    <ul role="navigation" class="drawer-list">
+        <li class="drawer-list-item">
+    <a href="../" data-pjax>Blog Home</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../projects/" data-pjax>Projects</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../talks/" data-pjax>Talks</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../papers/" data-pjax>Papers</a>
+  </li>
+  <li class="drawer-list-divider">
+
+<li class="drawer-list-item drawer-list-title">
+  Connect
+</li>
+<li class="drawer-list-item">
+  <a href="https://twitter.com/draffensperger" target="_blank">
+    <i class="fa fa-twitter"></i>Twitter
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="https://github.com/draffensperger" target="_blank">
+    <i class="fa fa-github"></i>Github
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="https://www.linkedin.com/in/draffensperger" target="_blank">
+    <i class="fa fa-linkedin"></i>LinkedIn
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="http://careers.stackoverflow.com/draffensperger" target="_blank">
+    <i class="fa fa-stack-overflow"></i>StackOverflow Careers
+  </a>
+</li>
+<li class="drawer-list-item" id="contact">
+</li>
+<script>
+document.getElementById('contact').innerHTML = atob('PGEgaHJlZj0ibWFpbHRvOmQucmFmZmVuc3BlcmdlckBnbWFpbC5jb20iIHRhcmdldD0iX2JsYW5rIj48aSBjbGFzcz0iZmEgZmEtZW52ZWxvcGUiPjwvaT5kLnJhZmZlbnNwZXJnZXJAZ21haWwuY29tPC9hPg==');  		
+</script> 
+
+
+    </ul>
+  </div>
+</nav>
+
+    <div class="drawer-overlay"></div>
+    <main id="container" role="main" class="container">
+      <div class="surface">
+        <div class="surface-container">
+          <div data-pjax-container class="content">
+            
+<section class="wrapper wrapper-post">
+  <div class="wrapper-container">
+    <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post post tag-go tag-algorithms">
+        <section class="post-container">
+          <header class="post-header">
+            <ul class="post-meta-list">
+              <li class="post-meta-item">
+                <time datetime="2015-08-02" itemprop="datePublished">
+                  a year ago
+                </time>
+              </li>
+                <li class="post-meta-item">
+                    <a itemprop="articleSection" href="../tag/go/" data-pjax>go</a>, 
+                    <a itemprop="keywords" href="../tag/algorithms/" data-pjax>algorithms</a> 
+                </li>
+              <li class="post-meta-item">
+                <a href="index.html#disqus_thread" data-disqus-identifier="9">Comments</a>
+              </li>
+            </ul>
+            <h1 itemprop="name headline" class="post-title"><a href="index.html" itemprop="url" data-pjax title="Calling a Linear Solver C Library from Go">Calling a Linear Solver C Library from Go</a></h1>
+            <!--h2 itemprop="about" class="post-subtitle"></h2-->
+          </header>
+          <aside class="post-side">
+            <div class="post-author">
+                <a href="index.html" class="post-author-avatar">
+                  <img src="https://www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&amp;d=mm&amp;r=x" alt="Dave Raffensperger">
+                </a>
+              <div class="post-author-info">
+                <a href="index.html" class="post-author-name">
+                  Dave Raffensperger
+                </a>
+                <p class="post-author-bio">Software engineer. Ruby, Go, JS, Java. Algorithms and productivity.</p>
+              </div>
+            </div>
+          </aside>
+          <div itemprop="articleBody" class="post-body">
+            <p><em>I wrote the <a href="https://github.com/draffensperger/golp">golp</a> library to
+provide Go bindings via <a href="https://golang.org/cmd/cgo/">cgo</a> for the <a href="http://sourceforge.net/projects/lpsolve/">LP_Solve</a> open source Mixed Integer Linear Programming (MILP) solver.</em></p>
+
+<h2 id="thegluebetweengoandc">The glue between Go and C</h2>
+
+<p>Here's the part of golp's <a href="https://github.com/draffensperger/golp/blob/master/lp.go">lp.go</a> that let's it compile for and link to LP Solve's C library:</p>
+
+<pre><code class="language-go">/*
+#cgo linux CFLAGS: -I./lpsolve
+#cgo linux LDFLAGS: -L./lpsolve -llpsolve55 -Wl,-rpath=./lpsolve
+#cgo darwin CFLAGS: -I/opt/local/include/lpsolve
+#cgo darwin LDFLAGS: -L/opt/local/lib -llpsolve55
+#include "lp_lib.h"
+...
+*/
+import "C"  
+...
+</code></pre>
+
+<p>The <code>import "C"</code> is similar to a normal Go import in that it brings in the <code>C</code> package with functions you can call, but cgo also interprets the comment above <code>import "C"</code> in a special way as follows.</p>
+
+<p>The <code>#cgo</code> lines with <code>CFLAGS</code> and <code>LDFLAGS</code> specify flags for the C compiler and linker respectively. The <code>darwin</code> and <code>linux</code> are Go <a href="https://golang.org/pkg/go/build/#hdr-Build_Constraints">build constraints</a> that specify which platform those flags apply to.</p>
+
+<p>The <code>linux</code> flags indicate that the compiler should search <code>./lpsolve</code> for the header and library file, and the <code>-Wl-rpath=./lpsolve</code> will cause the resulting executable to search the <code>./lpsolve</code> folder for <code>lpsolve55.so</code> to dynamically link to it. The Darwin build flags are designed to work with the version of LPSolve that will be installed by MacPorts.</p>
+
+<p>After the <code>#cgo</code> lines, the rest of the comment is interpreted as a snippet of C code, which can include headers and can even define new functions in C for the  Go code to call.</p>
+
+<h3 id="usingctypes">Using C types</h3>
+
+<p>With the initial glue in place, we can reference C types with <code>C.[any type defined in your C snippet]</code>. For instance, golp's wrapper <code>LP</code> type looks like this, where <code>lprec</code> is the type name for a linear program instance in LP Solve:</p>
+
+<pre><code class="language-go">type LP struct {  
+  ptr *C.lprec
+}
+</code></pre>
+
+<h3 id="callingcfunctions">Calling C functions</h3>
+
+<p>Calling C functions from Go is also as easy as calling <code>C.[c function]</code>. Here's golp's <code>NewLP</code> that returns a new linear program instance by calling <code>C.make_lp</code> (where <code>make_lp</code> is a function in <code>lp_lib.h</code>):</p>
+
+<pre><code class="language-go">func NewLP(rows, cols int) *LP {  
+  l := new(LP)
+  l.ptr = C.make_lp(C.int(rows), C.int(cols))
+  runtime.SetFinalizer(l, deleteLP)
+  ...
+  return l
+}
+</code></pre>
+
+<p>Notice the <code>runtime.SetFinalizer</code> call. In Go, objects are garbage collected, so we don't need to explicitly free them, but <code>make_lp</code> is a C function and allocates memory outside of Go's garbage-collecting watch. Thus we should free it by calling LP Solve's <code>delete_lp</code> (which the Go wrapper <code>deleteLP</code> does). </p>
+
+<p>The effect of doing the delete in the finalizer is that we can now use the Go <code>LP</code> wrapper object without needing to worry about calling the cleanup function explicitly as the Go runtime will call it right before it garbage collects the wrapper object.</p>
+
+<p>Another thing to note are the type casts like <code>C.int(rows)</code>, which are needed because <code>int</code> in Go and C are considered different types and could be different sizes depending on the platform and compilers.</p>
+
+<h2 id="installinggolp">Installing golp</h2>
+
+<p>To use the golp library, you'll need to:</p>
+
+<h4 id="1getthegolpgocode">1. Get the golp Go code</h4>
+
+<pre><code class="language-bash">go get github.com/draffensperger/golp  
+</code></pre>
+
+<h4 id="2getlpsolve">2. Get LPSolve</h4>
+
+<p>For Linux, download the build from <a href="http://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/">SourceForge</a> and extract it to <code>./lpsolve</code>. E.g. for 64-bit,</p>
+
+<pre><code class="language-bash">LP_URL=https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/lp_solve_5.5.2.0_dev_ux64.tar.gz  
+mkdir lpsolve  
+curl -L $LP_URL | tar xvz -C lpsolve  
+</code></pre>
+
+<p>For OS X, install <a href="https://www.macports.org/">MacPorts</a> then <code>sudo port install lp_solve</code>. There are Windows builds <a href="http://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/">on SourceForge</a> as well.</p>
+
+<h2 id="usingitinyourproject">Using it in your project</h2>
+
+<p>Here's a sample program that uses <code>golp</code> to solve a simple linear program, <br>
+based on an example from the <a href="http://lpsolve.sourceforge.net/5.5/formulate.htm">LPSolve documentation</a>:</p>
+
+<pre><code class="language-go">package main
+
+import "fmt"  
+import "github.com/draffensperger/golp"
+
+func main() {  
+  lp := golp.NewLP(0, 2) // 0 rows by 2 columns
+  lp.AddConstraint([]float64{110.0, 30.0}, golp.LE, 4000.0)
+  lp.AddConstraint([]float64{1.0, 1.0}, golp.LE, 75.0)
+  lp.SetObjFn([]float64{143.0, 60.0})
+  lp.SetMaximize()
+
+  lp.Solve()
+  vars := lp.Variables()
+  fmt.Printf("Plant %.3f acres of barley\n", vars[0])
+  fmt.Printf("And  %.3f acres of wheat\n", vars[1])
+  fmt.Printf("For optimal profit of $%.2f\n", lp.Objective())
+
+  // No need to explicitly free underlying C structure as
+  // golp.LP finalizer will
+}
+</code></pre>
+
+<p>Outputs:  </p>
+
+<pre><code>Plant 21.875 acres of barley  
+And  53.125 acres of wheat  
+For optimal profit of $6315.62  
+</code></pre>
+
+<h2 id="otherlinearprogrammingoptionsforgo">Other Linear Programming options for Go</h2>
+
+<p>LPSolve is <a href="http://lpsolve.sourceforge.net/5.5/LGPL.htm">LGPL licensed</a>, which allows it to be called from closed-source projects. It also supports solving mixed-integer programming problems (where some variables must be integers) using branch-and-bound. See the <a href="https://github.com/draffensperger/golp">golp README</a> for an mixed-integer example.</p>
+
+<p>There are also Go bindings for the GPL-licensed <a href="http://www.gnu.org/software/glpk/">GNU Linear Programming Kit (GLPK)</a> at <a href="https://github.com/lukpank/go-glpk">github.com/lukpank/go-glpk</a>, which would be suitable if your project has a GPL-compatible open source license.</p>
+
+<p>There are a number of other commercial and open-source solvers like CBC, CLP, GLOP, Gurobi, CPLEX, SCIP, and Sulum. Google provides a unified SWIG compatible C++ interface for all those solvers in their <a href="https://github.com/google/or-tools">or-tools</a> project.</p>
+
+<p>There is Go support <a href="http://www.swig.org/Doc2.0/Go.html">for SWIG bindings</a>, so it should be possible to write a wrapper that would connect to those other solvers via the or-tools library. It would involve some additional glue code compared to calling a C library with cgo though.</p>
+          </div>
+          <footer class="post-footer">
+            <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
+                <a href="index.html" class="post-author-avatar">
+                  <img itemprop="image" src="https://www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&amp;d=mm&amp;r=x" alt="Dave Raffensperger">
+                </a>
+              <div class="post-author-info">
+                <h4 class="post-footer-heading">Written By</h4>
+                <a href="index.html" itemprop="url" class="post-author-name">
+                  <span itemprop="name">Dave Raffensperger</span>
+                </a>
+                <p itemprop="description" class="post-author-bio">Software engineer. Ruby, Go, JS, Java. Algorithms and productivity.</p>
+                <p class="post-info">
+                  <b class="post-info-title">Published on</b>
+                  <time class="post-date">August 02, 2015</time>
+                </p>
+              </div>
+            </div>
+            <div class="post-social">
+              <h4 class="post-footer-heading">Spread the word</h4>
+              <a href="index.html#" data-action="share-twitter"><i class="fa fa-fw fa-lg fa-twitter"></i></a>
+              <a href="index.html#" data-action="share-facebook"><i class="fa fa-fw fa-lg fa-facebook"></i></a>
+              <a href="index.html#" data-action="share-gplus"><i class="fa fa-fw fa-lg fa-google-plus"></i></a>
+            </div>
+          </footer>
+        </section>
+      <section itemprop="comment" class="post-comments">
+        <div id="disqus_thread"></div>
+      </section>
+    </article>
+
+    <footer role="contentinfo" class="footer">
+  <p><small>© 2016 Dave Raffensperger.
+  <a href="http://ghostium.oswaldoacauan.com/" target="_blank">Ghostium Theme</a> 
+  by <a href="http://twitter.com/oswaldoacauan" target="_blank">@oswaldoacauan</a>.
+  Proudly published with <a href="http://ghost.org" target="_blank">Ghost</a>.</small></p>
+</footer>
+  </div>
+</section>
+
+<script type="text/javascript">
+  if(GHOSTIUM.haveDisqus) {
+    var disqus_identifier = '9';
+
+    if(typeof DISQUS !== 'object') {
+      (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    }
+  } else {
+    document.querySelector('.post-comments').remove();
+  }
+</script>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    
+
+    <script src="../assets/js/foot-scripts.min.js?v=cc3ce6961d"></script>
+
+    <script type="text/javascript">
+
+      if(GHOSTIUM.haveGA) {
+        (function(g,h,o,s,t,z){g.GoogleAnalyticsObject=s;g[s]||(g[s]=
+        function(){(g[s].q=g[s].q||[]).push(arguments)});g[s].s=+new Date;
+        t=h.createElement(o);z=h.getElementsByTagName(o)[0];
+        t.src='//www.google-analytics.com/analytics.js';
+        z.parentNode.insertBefore(t,z)}(window,document,'script','ga'));
+        ga('create',ga_ua);ga('send','pageview');
+      }
+
+      if(GHOSTIUM.haveDisqus) {
+        (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+      }
+    </script>
+  </body>

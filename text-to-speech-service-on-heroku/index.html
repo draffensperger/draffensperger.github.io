@@ -1,0 +1,447 @@
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Hosting a text-to-speech service on Heroku</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Hosting a text-to-speech service on Heroku">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:url" content="https://davidraff.com">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Hosting a text-to-speech service on Heroku">  
+    <meta property="og:description" content="">
+    <meta property="og:site_name" content="Dave Raffensperger">
+
+    <meta itemprop="name" content="Hosting a text-to-speech service on Heroku">
+    <meta itemprop="description" content="">
+
+    <meta name="twitter:site" content="@draffensperger">
+
+<meta name="twitter:creator" content="@draffensperger">
+
+<meta property="article:author" content="https://www.facebook.com/david.raffensperger">
+
+<meta property="article:publisher" content="https://www.facebook.com/david.raffensperger">
+
+<meta property="fb:admins" content="">
+
+<meta name="google-site-verification" content="">
+
+<link rel="author" href="https://plus.google.com/+DavidRaffensperger1">
+
+<meta name="theme-color" content="">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="../assets/images/apple-icon-57x57.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="60x60" href="../assets/images/apple-icon-60x60.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="72x72" href="../assets/images/apple-icon-72x72.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/images/apple-icon-76x76.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="114x114" href="../assets/images/apple-icon-114x114.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="120x120" href="../assets/images/apple-icon-120x120.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="144x144" href="../assets/images/apple-icon-144x144.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="152x152" href="../assets/images/apple-icon-152x152.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-icon-180x180.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-icon-192x192.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon-96x96.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png?v=cc3ce6961d">
+    <link rel="manifest" href="https://davidraff.com/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="https://fonts.googleapis.com/" rel="dns-prefetch">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400&amp;subset=latin,latin-ext" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/screen.css?v=cc3ce6961d">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+      var ga_ua = 'UA-42570145-1';
+
+var disqus_shortname = 'draffensperger';
+
+var enable_pjax = false;
+
+      // Pace Options
+      // ==============
+      window.paceOptions = {
+        catchupTime: 100,
+        minTime: 100,
+        elements: false,
+        restartOnRequestAfter: 500,
+        startOnPageLoad: false
+      }
+
+      // Ghostium Globals
+      // ==============
+      window.GHOSTIUM = {};
+      GHOSTIUM.haveGA = typeof ga_ua !== 'undefined' && ga_ua !== 'UA-XXXXX-X';
+      GHOSTIUM.haveDisqus = typeof disqus_shortname !== 'undefined' && disqus_shortname !== 'example';
+      GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
+    </script>
+
+    <script src="../assets/js/head-scripts.min.js?v=cc3ce6961d"></script>
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Dave Raffensperger">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Hosting a text-to-speech service on Heroku">
+    <meta property="og:description" content="Using marytts-http, you can  easily host a multilingual open source text-to-speech service on Heroku and restrict requests with HMAC-SHA256. In college, I made a vocab memorizer and used MaryTTS for speech synthesis to learn the correct German pronunciations. MaryTTS is an open-source multilingual text-to-speech library in Java, but it doesn't">
+    <meta property="og:url" content="https://davidraff.com/text-to-speech-service-on-heroku/">
+    <meta property="article:published_time" content="2015-08-02T20:12:00.000Z">
+    <meta property="article:modified_time" content="2016-08-27T18:40:45.000Z">
+    <meta property="article:tag" content="java">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Hosting a text-to-speech service on Heroku">
+    <meta name="twitter:description" content="Using marytts-http, you can  easily host a multilingual open source text-to-speech service on Heroku and restrict requests with HMAC-SHA256. In college, I made a vocab memorizer and used MaryTTS for speech synthesis to learn the correct German pronunciations. MaryTTS is an open-source multilingual text-to-speech library in Java, but it doesn't">
+    <meta name="twitter:url" content="https://davidraff.com/text-to-speech-service-on-heroku/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Dave Raffensperger">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="java">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Dave Raffensperger",
+        "logo": "https://davidraff.com/content/images/2016/03/dave_head_280_90.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Dave Raffensperger",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "https://davidraff.com/author/dave/",
+        "sameAs": [],
+        "description": "Software engineer. Ruby, Go, JS, Java. Algorithms and productivity."
+    },
+    "headline": "Hosting a text-to-speech service on Heroku",
+    "url": "https://davidraff.com/text-to-speech-service-on-heroku/",
+    "datePublished": "2015-08-02T20:12:00.000Z",
+    "dateModified": "2016-08-27T18:40:45.000Z",
+    "keywords": "java",
+    "description": "Using marytts-http, you can  easily host a multilingual open source text-to-speech service on Heroku and restrict requests with HMAC-SHA256. In college, I made a vocab memorizer and used MaryTTS for speech synthesis to learn the correct German pronunciations. MaryTTS is an open-source multilingual text-to-speech library in Java, but it doesn&#x27;t",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://davidraff.com"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Dave Raffensperger" href="../rss/index.html">
+  </head>
+  <body class="post-template tag-java">
+
+    <button data-action="open-drawer" id="drawer-button" class="drawer-button"><i class="fa fa-bars"></i></button>
+<nav tabindex="-1" class="drawer">
+  <div class="drawer-container">
+    <!--.drawer-search(role="search")-->
+    <ul role="navigation" class="drawer-list">
+        <li class="drawer-list-item">
+    <a href="../" data-pjax>Blog Home</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../projects/" data-pjax>Projects</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../talks/" data-pjax>Talks</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../papers/" data-pjax>Papers</a>
+  </li>
+  <li class="drawer-list-divider">
+
+<li class="drawer-list-item drawer-list-title">
+  Connect
+</li>
+<li class="drawer-list-item">
+  <a href="https://twitter.com/draffensperger" target="_blank">
+    <i class="fa fa-twitter"></i>Twitter
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="https://github.com/draffensperger" target="_blank">
+    <i class="fa fa-github"></i>Github
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="https://www.linkedin.com/in/draffensperger" target="_blank">
+    <i class="fa fa-linkedin"></i>LinkedIn
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="http://careers.stackoverflow.com/draffensperger" target="_blank">
+    <i class="fa fa-stack-overflow"></i>StackOverflow Careers
+  </a>
+</li>
+<li class="drawer-list-item" id="contact">
+</li>
+<script>
+document.getElementById('contact').innerHTML = atob('PGEgaHJlZj0ibWFpbHRvOmQucmFmZmVuc3BlcmdlckBnbWFpbC5jb20iIHRhcmdldD0iX2JsYW5rIj48aSBjbGFzcz0iZmEgZmEtZW52ZWxvcGUiPjwvaT5kLnJhZmZlbnNwZXJnZXJAZ21haWwuY29tPC9hPg==');  		
+</script> 
+
+
+    </ul>
+  </div>
+</nav>
+
+    <div class="drawer-overlay"></div>
+    <main id="container" role="main" class="container">
+      <div class="surface">
+        <div class="surface-container">
+          <div data-pjax-container class="content">
+            
+<section class="wrapper wrapper-post">
+  <div class="wrapper-container">
+    <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post post tag-java">
+        <section class="post-container">
+          <header class="post-header">
+            <ul class="post-meta-list">
+              <li class="post-meta-item">
+                <time datetime="2015-08-02" itemprop="datePublished">
+                  a year ago
+                </time>
+              </li>
+                <li class="post-meta-item">
+                    <a itemprop="articleSection" href="../tag/java/" data-pjax>java</a> 
+                </li>
+              <li class="post-meta-item">
+                <a href="index.html#disqus_thread" data-disqus-identifier="8">Comments</a>
+              </li>
+            </ul>
+            <h1 itemprop="name headline" class="post-title"><a href="index.html" itemprop="url" data-pjax title="Hosting a text-to-speech service on Heroku">Hosting a text-to-speech service on Heroku</a></h1>
+            <!--h2 itemprop="about" class="post-subtitle"></h2-->
+          </header>
+          <aside class="post-side">
+            <div class="post-author">
+                <a href="index.html" class="post-author-avatar">
+                  <img src="https://www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&amp;d=mm&amp;r=x" alt="Dave Raffensperger">
+                </a>
+              <div class="post-author-info">
+                <a href="index.html" class="post-author-name">
+                  Dave Raffensperger
+                </a>
+                <p class="post-author-bio">Software engineer. Ruby, Go, JS, Java. Algorithms and productivity.</p>
+              </div>
+            </div>
+          </aside>
+          <div itemprop="articleBody" class="post-body">
+            <p><em>Using <a href="https://github.com/draffensperger/marytts-http">marytts-http</a>, you can 
+easily host a multilingual open source text-to-speech service on Heroku and restrict requests with HMAC-SHA256.</em></p>
+
+<p>In college, I made a <a href="https://github.com/draffensperger/memorizer">vocab memorizer</a> and used <a href="http://mary.dfki.de/">MaryTTS</a> for speech synthesis to learn the correct German pronunciations.</p>
+
+<p>MaryTTS is an <a href="https://github.com/marytts/marytts">open-source</a> multilingual text-to-speech library in Java, but it doesn't expose a convenient and easy to deploy web service. So I recently built <a href="https://github.com/draffensperger/marytts-http">marytts-http</a>, to wrap it as a Java servlet using <a href="http://www.eclipse.org/jetty/">Jetty</a>.</p>
+
+<p>You can deploy it to Heroku like this (assuming you have their <a href="https://toolbelt.heroku.com/">toolbelt</a> and logged in):</p>
+
+<pre><code class="language-bash">git clone https://github.com/draffensperger/marytts-http  
+cd marytts-http  
+heroku create  
+git push heroku master  
+</code></pre>
+
+<p>Heroku will perform a Maven build for MaryTTS with English and German voices. You can then try the service by specifying <code>text</code> and <code>locale</code> and visiting e.g. <code>[your-marytts-app].herokuapp.com/?text=Hallo&amp;locale=de</code></p>
+
+<h2 id="securingrequests">Securing requests</h2>
+
+<p>You can secure your service by setting the <code>HMAC_SECRET</code> (Base64 encoded) environment variable. To generate a random 32-byte key and set it on Heroku run:  </p>
+
+<pre><code class="language-bash">heroku config:set HMAC_SECRET=`cat /dev/urandom | head -c 32 | base64`  
+</code></pre>
+
+<p>You will need to sign the requests using HMAC-SHA256, and you can also specify the <code>expires</code> parameter to make the signed request only last a specified period of time. The <br>
+<a href="https://github.com/draffensperger/marytts-http#securing-requests">marytts-http readme</a> has the details and see below for a Rails code example.</p>
+
+<h2 id="usingitinarailsapp">Using it in a Rails app</h2>
+
+<p>One way to use this in a Rails app would be via the <code>&amp;lt;audio&amp;gt;</code> tag. Assuming you have a view helper, <code>marytts_url</code>, this snippet would caused your page to say "Hallo" in German using your text-to-speech service:  </p>
+
+<pre><code class="language-ruby">&lt;%= audio_tag(marytts_url('Hallo', locale: :de), autoplay: true) %&gt;  
+</code></pre>
+
+<p>The view helper to construct and sign the URL with for the service could look like this:</p>
+
+<pre><code class="language-ruby">module MaryttsHelper  
+  @@marytts_key = Base64.decode64(Rails.application.secrets.marytts_key)
+  @@marytts_host = Rails.application.secrets.marytts_host
+
+  def marytts_url(text, opts={})
+    # Expiry time is represented as a unix timestamp
+    opts[:expires] = opts[:expires].to_i if opts[:expires].present?
+
+    params_to_sign_in_order = [:text, :locale, :gender, :voice, :style, 
+                               :effects, :expires]
+    params = opts.merge(text: text).slice(*params_to_sign_in_order)
+    sign_url(@@marytts_key, @@marytts_host, params)
+  end
+
+  private
+
+  def sign_url(key, base_url, params)
+    param_values = params.values.map(&amp;:to_s).reduce('', :+)
+    signature = hmac_sha256(param_values, key)
+    URI.join(base_url, '/?' + params.merge(signature: signature).to_query).to_s
+  end
+
+  def hmac_sha256(data, key)
+    digest = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), key, data)
+    Base64.encode64(digest).strip
+  end
+end  
+</code></pre>
+
+<p>You would set <code>marytts_host</code> and <code>marytts_key</code> in <code>secrets.yml</code> to be <br>
+<code>[your-marytts-app].herokuapp.com</code> and your <code>HMAC_KEY</code> above respectively.</p>
+
+<p>Here's a <a href="https://github.com/draffensperger/memorizer/blob/master/public/mary_embed.php">PHP code example</a> of how to embed a marytts-http link as well.</p>
+
+<h2 id="whataboutfrenchitalianswedishrussianturkishandtelugu">What about French, Italian, Swedish, Russian, Turkish, and Telugu?</h2>
+
+<p>MaryTTS supports those languages too! By modifying the marytts-http <a href="https://github.com/draffensperger/marytts-http/pom.xml">Maven build script</a>, we could add language and voice packages for them. A list of the voices is in the (non-user-friendly) MaryTTS <a href="https://github.com/marytts/marytts/blob/master/download/marytts-components.xml">components.xml</a>.</p>
+
+<h2 id="howdoesitactuallysound">How does it actually sound?</h2>
+
+<p>The German "bits3-hsmm" and English "cmu-slt-hsmm" voices included in marytts-http are space efficient (under 3MB total) but sound a bit tinny:</p>
+
+<audio src="https://davidraff.s3.amazonaws.com/audio/cmu-slt-hsmm-welcome.wav" controls preload="none"></audio>  
+
+<p><em>"Welcome to the world of speech synthesis!"</em></p>
+
+<audio src="https://davidraff.s3.amazonaws.com/audio/bits3-hsmm-welcome.wav" controls preload="none"></audio>  
+
+<p><em>"Willkommen in der Welt der Sprachsynthese!"</em></p>
+
+<p>If we used more space for the German "dfki-pavoque-neutral" (425MB) and the British English "dfki-spike" (129MB) voices, the quality would be better:</p>
+
+<audio src="https://davidraff.s3.amazonaws.com/audio/dfki-spike-higher-quality.wav" controls preload="none"></audio>  
+
+<p><em>"This voice is higher quality."</em></p>
+
+<audio src="https://davidraff.s3.amazonaws.com/audio/dfki-pavoque-neutral-qualitaetvoller.wav" controls preload="none"></audio>  
+
+<p><em>"Diese Stimme ist qualitätvoller."</em></p>
+
+<p>But given the Heroku slug size limit of 300MB, and the increased RAM needed for those voices, deploying them may take more work and larger dyno sizes.</p>
+
+<p>To try out the various voices and languages, you can <a href="http://mary.dfki.de/download/index.html">download MaryTTS</a>, run their component installer to get the voices and run a local MaryTTS server which provides a web interface for you to interact with the system.</p>
+
+<h2 id="othertexttospeechoptions">Other text-to-speech options</h2>
+
+<p>There are several hosted text-to-speech web services by <a href="http://www.ispeech.org/api#tts">iSpeech</a>, <br>
+<a href="http://developer.att.com/apis/speech">AT&amp;T Speech API</a>, 
+<a href="http://www.ivona.com/us/for-business/speech-cloud/">Ivona (Amazon)</a>, or <a href="https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/text-to-speech/">IBM</a>, and depending on your app needs, a managed API service may be best for you.</p>
+          </div>
+          <footer class="post-footer">
+            <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
+                <a href="index.html" class="post-author-avatar">
+                  <img itemprop="image" src="https://www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&amp;d=mm&amp;r=x" alt="Dave Raffensperger">
+                </a>
+              <div class="post-author-info">
+                <h4 class="post-footer-heading">Written By</h4>
+                <a href="index.html" itemprop="url" class="post-author-name">
+                  <span itemprop="name">Dave Raffensperger</span>
+                </a>
+                <p itemprop="description" class="post-author-bio">Software engineer. Ruby, Go, JS, Java. Algorithms and productivity.</p>
+                <p class="post-info">
+                  <b class="post-info-title">Published on</b>
+                  <time class="post-date">August 02, 2015</time>
+                </p>
+              </div>
+            </div>
+            <div class="post-social">
+              <h4 class="post-footer-heading">Spread the word</h4>
+              <a href="index.html#" data-action="share-twitter"><i class="fa fa-fw fa-lg fa-twitter"></i></a>
+              <a href="index.html#" data-action="share-facebook"><i class="fa fa-fw fa-lg fa-facebook"></i></a>
+              <a href="index.html#" data-action="share-gplus"><i class="fa fa-fw fa-lg fa-google-plus"></i></a>
+            </div>
+          </footer>
+        </section>
+      <section itemprop="comment" class="post-comments">
+        <div id="disqus_thread"></div>
+      </section>
+    </article>
+
+    <footer role="contentinfo" class="footer">
+  <p><small>© 2016 Dave Raffensperger.
+  <a href="http://ghostium.oswaldoacauan.com/" target="_blank">Ghostium Theme</a> 
+  by <a href="http://twitter.com/oswaldoacauan" target="_blank">@oswaldoacauan</a>.
+  Proudly published with <a href="http://ghost.org" target="_blank">Ghost</a>.</small></p>
+</footer>
+  </div>
+</section>
+
+<script type="text/javascript">
+  if(GHOSTIUM.haveDisqus) {
+    var disqus_identifier = '8';
+
+    if(typeof DISQUS !== 'object') {
+      (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    }
+  } else {
+    document.querySelector('.post-comments').remove();
+  }
+</script>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    
+
+    <script src="../assets/js/foot-scripts.min.js?v=cc3ce6961d"></script>
+
+    <script type="text/javascript">
+
+      if(GHOSTIUM.haveGA) {
+        (function(g,h,o,s,t,z){g.GoogleAnalyticsObject=s;g[s]||(g[s]=
+        function(){(g[s].q=g[s].q||[]).push(arguments)});g[s].s=+new Date;
+        t=h.createElement(o);z=h.getElementsByTagName(o)[0];
+        t.src='//www.google-analytics.com/analytics.js';
+        z.parentNode.insertBefore(t,z)}(window,document,'script','ga'));
+        ga('create',ga_ua);ga('send','pageview');
+      }
+
+      if(GHOSTIUM.haveDisqus) {
+        (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+      }
+    </script>
+  </body>

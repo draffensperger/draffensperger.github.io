@@ -1,0 +1,991 @@
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Hosting a text-to-speech service on Heroku</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+
+    <link rel="shortcut icon" href="../../favicon.ico">
+
+    <link rel="canonical" href="../index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:site_name" content="Dave Raffensperger">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Hosting a text-to-speech service on Heroku">
+    <meta property="og:description" content="I wrote the golp library to provide Go bindings via cgo for the LP_Solve open source Mixed Integer Linear Programming (MILP) solver. The glue between Go and C Here's the part of golp's lp.go that let's it compile for and link to LP Solve's C library: /* #cgo linux">
+    <meta property="og:url" content="https://davidraff.com/calling-a-linear-solver-c-library-from-go/">
+    <meta property="article:published_time" content="2015-08-02T20:12:00.000Z">
+    <meta property="article:modified_time" content="2016-03-01T12:52:00.000Z">
+    <meta property="article:tag" content="go">
+    <meta property="article:tag" content="algorithms">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Hosting a text-to-speech service on Heroku">
+    <meta name="twitter:description" content="I wrote the golp library to provide Go bindings via cgo for the LP_Solve open source Mixed Integer Linear Programming (MILP) solver. The glue between Go and C Here's the part of golp's lp.go that let's it compile for and link to LP Solve's C library: /* #cgo linux">
+    <meta name="twitter:url" content="https://davidraff.com/calling-a-linear-solver-c-library-from-go/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Dave Raffensperger">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="go, algorithms">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Dave Raffensperger",
+        "logo": "https://davidraff.com/content/images/2016/03/dave_head_280_90.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Dave Raffensperger",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "https://davidraff.com/author/dave/",
+        "sameAs": [],
+        "description": "Software engineer. Ruby, Go, JS, Java. Algorithms and productivity."
+    },
+    "headline": "Hosting a text-to-speech service on Heroku",
+    "url": "https://davidraff.com/calling-a-linear-solver-c-library-from-go/",
+    "datePublished": "2015-08-02T20:12:00.000Z",
+    "dateModified": "2016-03-01T12:52:00.000Z",
+    "keywords": "go, algorithms",
+    "description": "I wrote the golp library to provide Go bindings via cgo for the LP_Solve open source Mixed Integer Linear Programming (MILP) solver. The glue between Go and C Here&#x27;s the part of golp&#x27;s lp.go that let&#x27;s it compile for and link to LP Solve&#x27;s C library: /* #cgo linux",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://davidraff.com"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Dave Raffensperger" href="../../rss/index.html">
+
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,600,400">
+    <style amp-custom>
+        /* ==========================================================================
+           Table of Contents
+           ========================================================================== */
+
+        /*
+
+            0. Normalize
+            1. General
+            2. Utilities
+            3. AMP Post
+            4. Footer
+
+        */
+
+        /* ==========================================================================
+           0. normalize.css v3.0.3 | MIT License | git.io/normalize | (minified)
+           ========================================================================== */
+
+        html {
+            font-family: sans-serif;
+
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            margin: 0;
+        }
+        article,
+        aside,
+        details,
+        figcaption,
+        figure,
+        footer,
+        header,
+        main,
+        menu,
+        nav,
+        section,
+        summary {
+            display: block;
+        }
+        audio,
+        canvas,
+        progress,
+        video {
+            display: inline-block;
+            vertical-align: baseline;
+        }
+        audio:not([controls]) {
+            display: none;
+            height: 0;
+        }
+        [hidden],
+        template {
+            display: none;
+        }
+        a {
+            background-color: transparent;
+        }
+        a:active,
+        a:hover {
+            outline: 0;
+        }
+        abbr[title] {
+            border-bottom: 1px dotted;
+        }
+        b,
+        strong {
+            font-weight: bold;
+        }
+        dfn {
+            font-style: italic;
+        }
+        h1 {
+            margin: 0.67em 0;
+            font-size: 2em;
+        }
+        mark {
+            background: #ff0;
+            color: #000;
+        }
+        small {
+            font-size: 80%;
+        }
+        sub,
+        sup {
+            position: relative;
+            vertical-align: baseline;
+            font-size: 75%;
+            line-height: 0;
+        }
+        sup {
+            top: -0.5em;
+        }
+        sub {
+            bottom: -0.25em;
+        }
+        img {
+            border: 0;
+        }
+        amp-img {
+            border: 0;
+        }
+        svg:not(:root) {
+            overflow: hidden;
+        }
+        figure {
+            margin: 1em 40px;
+        }
+        hr {
+            box-sizing: content-box;
+            height: 0;
+        }
+        pre {
+            overflow: auto;
+        }
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: monospace, monospace;
+            font-size: 1em;
+        }
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            margin: 0;
+            color: inherit;
+            font: inherit;
+        }
+        button {
+            overflow: visible;
+        }
+        button,
+        select {
+            text-transform: none;
+        }
+        button,
+        html input[type="button"],
+        input[type="reset"],
+        input[type="submit"] {
+            cursor: pointer;
+
+            -webkit-appearance: button;
+        }
+        button[disabled],
+        html input[disabled] {
+            cursor: default;
+        }
+        button::-moz-focus-inner,
+        input::-moz-focus-inner {
+            padding: 0;
+            border: 0;
+        }
+        input {
+            line-height: normal;
+        }
+        input[type="checkbox"],
+        input[type="radio"] {
+            box-sizing: border-box;
+            padding: 0;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            height: auto;
+        }
+        input[type="search"] {
+            -webkit-appearance: textfield;
+        }
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+        fieldset {
+            margin: 0 2px;
+            padding: 0.35em 0.625em 0.75em;
+            border: 1px solid #c0c0c0;
+        }
+        legend {
+            padding: 0;
+            border: 0;
+        }
+        textarea {
+            overflow: auto;
+        }
+        optgroup {
+            font-weight: bold;
+        }
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+        td,
+        th {
+            padding: 0;
+        }
+
+
+        /* ==========================================================================
+           1. General - Setting up some base styles
+           ========================================================================== */
+
+        html {
+            max-height: 100%;
+            height: 100%;
+            font-size: 62.5%;
+
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        body {
+            max-height: 100%;
+            height: 100%;
+            color: #3a4145;
+            background: #f4f8fb;
+            letter-spacing: 0.01rem;
+            font-family: "Merriweather", serif;
+            font-size: 1.8rem;
+            line-height: 1.75em;
+            text-rendering: geometricPrecision;
+
+            -webkit-font-feature-settings: "kern" 1;
+            -moz-font-feature-settings: "kern" 1;
+            -o-font-feature-settings: "kern" 1;
+        }
+
+        ::-moz-selection {
+            background: #d6edff;
+        }
+
+        ::selection {
+            background: #d6edff;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0 0 0.3em 0;
+            color: #2e2e2e;
+            font-family: "Open Sans", sans-serif;
+            line-height: 1.15em;
+            text-rendering: geometricPrecision;
+
+            -webkit-font-feature-settings: "dlig" 1, "liga" 1, "lnum" 1, "kern" 1;
+            -moz-font-feature-settings: "dlig" 1, "liga" 1, "lnum" 1, "kern" 1;
+            -o-font-feature-settings: "dlig" 1, "liga" 1, "lnum" 1, "kern" 1;
+        }
+
+        h1 {
+            text-indent: -2px;
+            letter-spacing: -1px;
+            font-size: 2.6rem;
+        }
+
+        h2 {
+            letter-spacing: 0;
+            font-size: 2.4rem;
+        }
+
+        h3 {
+            letter-spacing: -0.6px;
+            font-size: 2.1rem;
+        }
+
+        h4 {
+            font-size: 1.9rem;
+        }
+
+        h5 {
+            font-size: 1.8rem;
+        }
+
+        h6 {
+            font-size: 1.8rem;
+        }
+
+        a {
+            color: #4a4a4a;
+        }
+
+        a:hover {
+            color: #111;
+        }
+
+        p,
+        ul,
+        ol,
+        dl {
+            margin: 0 0 2.5rem 0;
+            font-size: 1.5rem;
+            text-rendering: geometricPrecision;
+
+            -webkit-font-feature-settings: "liga" 1, "onum" 1, "kern" 1;
+            -moz-font-feature-settings: "liga" 1, "onum" 1, "kern" 1;
+            -o-font-feature-settings: "liga" 1, "onum" 1, "kern" 1;
+        }
+
+        ol,
+        ul {
+            padding-left: 2em;
+        }
+
+        ol ol,
+        ul ul,
+        ul ol,
+        ol ul {
+            margin: 0 0 0.4em 0;
+            padding-left: 2em;
+        }
+
+        dl dt {
+            float: left;
+            clear: left;
+            overflow: hidden;
+            margin-bottom: 1em;
+            width: 180px;
+            text-align: right;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 700;
+        }
+
+        dl dd {
+            margin-bottom: 1em;
+            margin-left: 200px;
+        }
+
+        li {
+            margin: 0.4em 0;
+        }
+
+        li li {
+            margin: 0;
+        }
+
+        hr {
+            display: block;
+            margin: 1.75em 0;
+            padding: 0;
+            height: 1px;
+            border: 0;
+            border-top: #efefef 1px solid;
+        }
+
+        blockquote {
+            box-sizing: border-box;
+            margin: 1.75em 0 1.75em 0;
+            padding: 0 0 0 1.75em;
+            border-left: #4a4a4a 0.4em solid;
+
+            -moz-box-sizing: border-box;
+        }
+
+        blockquote p {
+            margin: 0.8em 0;
+            font-style: italic;
+        }
+
+        blockquote small {
+            display: inline-block;
+            margin: 0.8em 0 0.8em 1.5em;
+            color: #ccc;
+            font-size: 0.9em;
+        }
+
+        blockquote small:before {
+            content: "\2014 \00A0";
+        }
+
+        blockquote cite {
+            font-weight: 700;
+        }
+
+        blockquote cite a {
+            font-weight: normal;
+        }
+
+        mark {
+            background-color: #fdffb6;
+        }
+
+        code,
+        tt {
+            padding: 1px 3px;
+            border: #e3edf3 1px solid;
+            background: #f7fafb;
+            border-radius: 2px;
+            white-space: pre-wrap;
+            font-family: Inconsolata, monospace, sans-serif;
+            font-size: 0.85em;
+            font-feature-settings: "liga" 0;
+
+            -webkit-font-feature-settings: "liga" 0;
+            -moz-font-feature-settings: "liga" 0;
+        }
+
+        pre {
+            overflow: auto;
+            box-sizing: border-box;
+            margin: 0 0 1.75em 0;
+            padding: 10px;
+            width: 100%;
+            border: #e3edf3 1px solid;
+            background: #f7fafb;
+            border-radius: 3px;
+            white-space: pre;
+            font-family: Inconsolata, monospace, sans-serif;
+            font-size: 0.9em;
+
+            -moz-box-sizing: border-box;
+        }
+
+        pre code,
+        pre tt {
+            padding: 0;
+            border: none;
+            background: transparent;
+            white-space: pre-wrap;
+            font-size: inherit;
+        }
+
+        kbd {
+            display: inline-block;
+            margin-bottom: 0.4em;
+            padding: 1px 8px;
+            border: #ccc 1px solid;
+            background: #f4f4f4;
+            border-radius: 4px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2),
+            0 1px 0 0 #fff inset;
+            color: #666;
+            text-shadow: #fff 0 1px 0;
+            font-size: 0.9em;
+            font-weight: 700;
+        }
+
+        table {
+            box-sizing: border-box;
+            margin: 1.75em 0;
+            max-width: 100%;
+            width: 100%;
+            background-color: transparent;
+
+            -moz-box-sizing: border-box;
+        }
+
+        table th,
+        table td {
+            padding: 8px;
+            border-top: #efefef 1px solid;
+            vertical-align: top;
+            text-align: left;
+            line-height: 20px;
+        }
+
+        table th {
+            color: #000;
+        }
+
+        table caption + thead tr:first-child th,
+        table caption + thead tr:first-child td,
+        table colgroup + thead tr:first-child th,
+        table colgroup + thead tr:first-child td,
+        table thead:first-child tr:first-child th,
+        table thead:first-child tr:first-child td {
+            border-top: 0;
+        }
+
+        table tbody + tbody {
+            border-top: #efefef 2px solid;
+        }
+
+        table table table {
+            background-color: #fff;
+        }
+
+        table tbody > tr:nth-child(odd) > td,
+        table tbody > tr:nth-child(odd) > th {
+            background-color: #f6f6f6;
+        }
+
+        table.plain tbody > tr:nth-child(odd) > td,
+        table.plain tbody > tr:nth-child(odd) > th {
+            background: transparent;
+        }
+
+        iframe,
+        amp-iframe,
+        .fluid-width-video-wrapper {
+            display: block;
+            margin: 1.75em 0;
+        }
+
+        /* When a video is inside the fitvids wrapper, drop the
+        margin on the iframe, cause it breaks stuff. */
+        .fluid-width-video-wrapper iframe,
+        .fluid-width-video-wrapper amp-iframe {
+            margin: 0;
+        }
+
+        textarea,
+        select,
+        input {
+            margin: 0 0 5px 0;
+            padding: 6px 9px;
+            width: 260px;
+            outline: 0;
+            border: #e7eef2 1px solid;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: none;
+            font-family: "Open Sans", sans-serif;
+            font-size: 1.6rem;
+            line-height: 1.4em;
+            font-weight: 100;
+
+            -webkit-appearance: none;
+        }
+
+        textarea {
+            min-width: 250px;
+            min-height: 80px;
+            max-width: 340px;
+            width: 100%;
+            height: auto;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="search"]:focus,
+        input[type="tel"]:focus,
+        input[type="url"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        input[type="month"]:focus,
+        input[type="week"]:focus,
+        input[type="time"]:focus,
+        input[type="datetime"]:focus,
+        input[type="datetime-local"]:focus,
+        textarea:focus {
+            outline: none;
+            outline-width: 0;
+            border: #bbc7cc 1px solid;
+            background: #fff;
+        }
+
+        select {
+            width: 270px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        /* ==========================================================================
+           2. Utilities
+           ========================================================================== */
+
+        /* Clears shit */
+        .clearfix:before,
+        .clearfix:after {
+            content: " ";
+            display: table;
+        }
+        .clearfix:after {
+            clear: both;
+        }
+        .clearfix {
+            zoom: 1;
+        }
+
+        /* ==========================================================================
+           3. AMP Post
+           ========================================================================== */
+
+
+
+        .main-header {
+            position: relative;
+            display: table;
+            overflow: hidden;
+            box-sizing: border-box;
+            width: 100%;
+            height: 50px;
+            background: #5ba4e5 no-repeat center center;
+            background-size: cover;
+            text-align: left;
+
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        .content {
+            background: #fff;
+            padding-top: 15px;
+        }
+        .blog-title,
+        .content {
+            margin: auto;
+            max-width: 600px;
+        }
+
+        .blog-title a {
+            display: block;
+            padding-right: 16px;
+            padding-left: 16px;
+            height: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            line-height: 50px;
+            font-weight: 600;
+        }
+
+        .post {
+            position: relative;
+            margin-top: 0;
+            margin-right: 16px;
+            margin-left: 16px;
+            padding-bottom: 0;
+            max-width: 100%;
+            border-bottom: #ebf2f6 1px solid;
+            word-wrap: break-word;
+            font-size: 0.95em;
+            line-height: 1.65em;
+        }
+
+        .post-header {
+            margin-bottom: 1rem;
+        }
+
+        .post-title {
+            margin-bottom: 0;
+        }
+
+        .post-title a {
+            text-decoration: none;
+        }
+
+        .post-meta {
+            display: block;
+            margin: 3px 0 0 0;
+            color: #9eabb3;
+            font-family: "Open Sans", sans-serif;
+            font-size: 1.3rem;
+            line-height: 2.2rem;
+        }
+
+        .post-meta a {
+            color: #9eabb3;
+            text-decoration: none;
+        }
+
+        .post-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .post-meta .author {
+            margin: 0;
+            font-size: 1.3rem;
+            line-height: 1.3em;
+        }
+
+        .post-date {
+            display: inline-block;
+            text-transform: uppercase;
+            white-space: nowrap;
+            font-size: 1.2rem;
+            line-height: 1.2em;
+        }
+
+        .post-image {
+            margin: 0;
+            padding-top: 3rem;
+            padding-bottom: 30px;
+            border-top: 1px #E8E8E8 solid;
+        }
+
+        /* Keep images centered, and allow images wider than the main
+           text column to break out. */
+        .post-content amp-img,
+        .post-content amp-anim {
+            /* Centers an image by (1) pushing its left edge to the
+               center of its container and (2) shifting the entire image
+               in the opposite direction by half its own width.
+               Works for images that are larger than their containers. */
+            position: relative;
+            left: 50%;
+            display: block;
+            padding: 0;
+            min-width: 0;
+            max-width: 112%; /* fallback when calc doesn't work */
+            width: calc(100% + 32px); /* expand with to image + margins */
+            height: auto;
+            transform: translateX(-50%);
+
+            -webkit-transform: translateX(-50%); /* for Safari and iOS */
+            -ms-transform: translateX(-50%); /* for IE9 */
+        }
+
+        .footnotes {
+            font-size: 1.3rem;
+            line-height: 1.6em;
+            font-style: italic;
+        }
+
+        .footnotes li {
+            margin: 0.6rem 0;
+        }
+
+        .footnotes p {
+            margin: 0;
+        }
+
+        .footnotes p a:last-child {
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           4. Footer - The bottom the AMP Post
+           ========================================================================== */
+
+        .site-footer {
+            position: relative;
+            margin: 0 auto 20px auto;
+            padding: 1rem 15px;
+            max-width: 600px;
+            color: rgba(0,0,0,0.5);
+            font-family: "Open Sans", sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.75em;
+        }
+
+        .site-footer a {
+            color: rgba(0,0,0,0.5);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .site-footer a:hover {
+            border-bottom: #bbc7cc 1px solid;
+        }
+
+        .poweredby {
+            display: block;
+            float: right;
+            width: 45%;
+            text-align: right;
+        }
+
+        .copyright {
+            display: block;
+            float: left;
+            width: 45%;
+        }
+    </style>
+
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+
+    
+
+</head>
+
+<body class="amp-template">
+    <header class="main-header">
+        <nav class="blog-title">
+            <a href="../../">Dave Raffensperger</a>
+        </nav>
+    </header>
+
+    <main class="content" role="main">
+        <article class="post">
+
+            <header class="post-header">
+                <h1 class="post-title">Calling a Linear Solver C Library from Go</h1>
+                <section class="post-meta">
+                    <p class="author">by <a href="../../author/dave/">Dave Raffensperger</a></p>
+                    <time class="post-date" datetime="2015-08-02">2015-08-02</time>
+                </section>
+            </header>
+            <section class="post-content">
+
+                <p><em>I wrote the <a href="https://github.com/draffensperger/golp">golp</a> library to
+provide Go bindings via <a href="https://golang.org/cmd/cgo/">cgo</a> for the <a href="http://sourceforge.net/projects/lpsolve/">LP_Solve</a> open source Mixed Integer Linear Programming (MILP) solver.</em></p>
+
+<h2 id="thegluebetweengoandc">The glue between Go and C</h2>
+
+<p>Here's the part of golp's <a href="https://github.com/draffensperger/golp/blob/master/lp.go">lp.go</a> that let's it compile for and link to LP Solve's C library:</p>
+
+<pre><code class="language-go">/*
+#cgo linux CFLAGS: -I./lpsolve
+#cgo linux LDFLAGS: -L./lpsolve -llpsolve55 -Wl,-rpath=./lpsolve
+#cgo darwin CFLAGS: -I/opt/local/include/lpsolve
+#cgo darwin LDFLAGS: -L/opt/local/lib -llpsolve55
+#include "lp_lib.h"
+...
+*/
+import "C"  
+...
+</code></pre>
+
+<p>The <code>import "C"</code> is similar to a normal Go import in that it brings in the <code>C</code> package with functions you can call, but cgo also interprets the comment above <code>import "C"</code> in a special way as follows.</p>
+
+<p>The <code>#cgo</code> lines with <code>CFLAGS</code> and <code>LDFLAGS</code> specify flags for the C compiler and linker respectively. The <code>darwin</code> and <code>linux</code> are Go <a href="https://golang.org/pkg/go/build/#hdr-Build_Constraints">build constraints</a> that specify which platform those flags apply to.</p>
+
+<p>The <code>linux</code> flags indicate that the compiler should search <code>./lpsolve</code> for the header and library file, and the <code>-Wl-rpath=./lpsolve</code> will cause the resulting executable to search the <code>./lpsolve</code> folder for <code>lpsolve55.so</code> to dynamically link to it. The Darwin build flags are designed to work with the version of LPSolve that will be installed by MacPorts.</p>
+
+<p>After the <code>#cgo</code> lines, the rest of the comment is interpreted as a snippet of C code, which can include headers and can even define new functions in C for the  Go code to call.</p>
+
+<h3 id="usingctypes">Using C types</h3>
+
+<p>With the initial glue in place, we can reference C types with <code>C.[any type defined in your C snippet]</code>. For instance, golp's wrapper <code>LP</code> type looks like this, where <code>lprec</code> is the type name for a linear program instance in LP Solve:</p>
+
+<pre><code class="language-go">type LP struct {  
+  ptr *C.lprec
+}
+</code></pre>
+
+<h3 id="callingcfunctions">Calling C functions</h3>
+
+<p>Calling C functions from Go is also as easy as calling <code>C.[c function]</code>. Here's golp's <code>NewLP</code> that returns a new linear program instance by calling <code>C.make_lp</code> (where <code>make_lp</code> is a function in <code>lp_lib.h</code>):</p>
+
+<pre><code class="language-go">func NewLP(rows, cols int) *LP {  
+  l := new(LP)
+  l.ptr = C.make_lp(C.int(rows), C.int(cols))
+  runtime.SetFinalizer(l, deleteLP)
+  ...
+  return l
+}
+</code></pre>
+
+<p>Notice the <code>runtime.SetFinalizer</code> call. In Go, objects are garbage collected, so we don't need to explicitly free them, but <code>make_lp</code> is a C function and allocates memory outside of Go's garbage-collecting watch. Thus we should free it by calling LP Solve's <code>delete_lp</code> (which the Go wrapper <code>deleteLP</code> does). </p>
+
+<p>The effect of doing the delete in the finalizer is that we can now use the Go <code>LP</code> wrapper object without needing to worry about calling the cleanup function explicitly as the Go runtime will call it right before it garbage collects the wrapper object.</p>
+
+<p>Another thing to note are the type casts like <code>C.int(rows)</code>, which are needed because <code>int</code> in Go and C are considered different types and could be different sizes depending on the platform and compilers.</p>
+
+<h2 id="installinggolp">Installing golp</h2>
+
+<p>To use the golp library, you'll need to:</p>
+
+<h4 id="1getthegolpgocode">1. Get the golp Go code</h4>
+
+<pre><code class="language-bash">go get github.com/draffensperger/golp  
+</code></pre>
+
+<h4 id="2getlpsolve">2. Get LPSolve</h4>
+
+<p>For Linux, download the build from <a href="http://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/">SourceForge</a> and extract it to <code>./lpsolve</code>. E.g. for 64-bit,</p>
+
+<pre><code class="language-bash">LP_URL=https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/lp_solve_5.5.2.0_dev_ux64.tar.gz  
+mkdir lpsolve  
+curl -L $LP_URL | tar xvz -C lpsolve  
+</code></pre>
+
+<p>For OS X, install <a href="https://www.macports.org/">MacPorts</a> then <code>sudo port install lp_solve</code>. There are Windows builds <a href="http://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/">on SourceForge</a> as well.</p>
+
+<h2 id="usingitinyourproject">Using it in your project</h2>
+
+<p>Here's a sample program that uses <code>golp</code> to solve a simple linear program, <br>
+based on an example from the <a href="http://lpsolve.sourceforge.net/5.5/formulate.htm">LPSolve documentation</a>:</p>
+
+<pre><code class="language-go">package main
+
+import "fmt"  
+import "github.com/draffensperger/golp"
+
+func main() {  
+  lp := golp.NewLP(0, 2) // 0 rows by 2 columns
+  lp.AddConstraint([]float64{110.0, 30.0}, golp.LE, 4000.0)
+  lp.AddConstraint([]float64{1.0, 1.0}, golp.LE, 75.0)
+  lp.SetObjFn([]float64{143.0, 60.0})
+  lp.SetMaximize()
+
+  lp.Solve()
+  vars := lp.Variables()
+  fmt.Printf("Plant %.3f acres of barley\n", vars[0])
+  fmt.Printf("And  %.3f acres of wheat\n", vars[1])
+  fmt.Printf("For optimal profit of $%.2f\n", lp.Objective())
+
+  // No need to explicitly free underlying C structure as
+  // golp.LP finalizer will
+}
+</code></pre>
+
+<p>Outputs:  </p>
+
+<pre><code>Plant 21.875 acres of barley  
+And  53.125 acres of wheat  
+For optimal profit of $6315.62  
+</code></pre>
+
+<h2 id="otherlinearprogrammingoptionsforgo">Other Linear Programming options for Go</h2>
+
+<p>LPSolve is <a href="http://lpsolve.sourceforge.net/5.5/LGPL.htm">LGPL licensed</a>, which allows it to be called from closed-source projects. It also supports solving mixed-integer programming problems (where some variables must be integers) using branch-and-bound. See the <a href="https://github.com/draffensperger/golp">golp README</a> for an mixed-integer example.</p>
+
+<p>There are also Go bindings for the GPL-licensed <a href="http://www.gnu.org/software/glpk/">GNU Linear Programming Kit (GLPK)</a> at <a href="https://github.com/lukpank/go-glpk">github.com/lukpank/go-glpk</a>, which would be suitable if your project has a GPL-compatible open source license.</p>
+
+<p>There are a number of other commercial and open-source solvers like CBC, CLP, GLOP, Gurobi, CPLEX, SCIP, and Sulum. Google provides a unified SWIG compatible C++ interface for all those solvers in their <a href="https://github.com/google/or-tools">or-tools</a> project.</p>
+
+<p>There is Go support <a href="http://www.swig.org/Doc2.0/Go.html">for SWIG bindings</a>, so it should be possible to write a wrapper that would connect to those other solvers via the or-tools library. It would involve some additional glue code compared to calling a C library with cgo though.</p>
+
+            </section>
+
+        </article>
+    </main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="../../">Dave Raffensperger</a> © 2016</section>
+        <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+    </footer>
+</body>

@@ -1,0 +1,430 @@
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Fuzzy Matching in PHP and Excel</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Fuzzy Matching in PHP and Excel">
+    <meta name="twitter:description" content="I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.">
+
+    <meta property="og:url" content="https://davidraff.com">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Fuzzy Matching in PHP and Excel">  
+    <meta property="og:description" content="I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.">
+    <meta property="og:site_name" content="Dave Raffensperger">
+
+    <meta itemprop="name" content="Fuzzy Matching in PHP and Excel">
+    <meta itemprop="description" content="I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.">
+
+    <meta name="twitter:site" content="@draffensperger">
+
+<meta name="twitter:creator" content="@draffensperger">
+
+<meta property="article:author" content="https://www.facebook.com/david.raffensperger">
+
+<meta property="article:publisher" content="https://www.facebook.com/david.raffensperger">
+
+<meta property="fb:admins" content="">
+
+<meta name="google-site-verification" content="">
+
+<link rel="author" href="https://plus.google.com/+DavidRaffensperger1">
+
+<meta name="theme-color" content="">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="../assets/images/apple-icon-57x57.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="60x60" href="../assets/images/apple-icon-60x60.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="72x72" href="../assets/images/apple-icon-72x72.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/images/apple-icon-76x76.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="114x114" href="../assets/images/apple-icon-114x114.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="120x120" href="../assets/images/apple-icon-120x120.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="144x144" href="../assets/images/apple-icon-144x144.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="152x152" href="../assets/images/apple-icon-152x152.png?v=cc3ce6961d">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-icon-180x180.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-icon-192x192.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon-96x96.png?v=cc3ce6961d">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png?v=cc3ce6961d">
+    <link rel="manifest" href="https://davidraff.com/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="https://fonts.googleapis.com/" rel="dns-prefetch">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400&amp;subset=latin,latin-ext" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/screen.css?v=cc3ce6961d">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+      var ga_ua = 'UA-42570145-1';
+
+var disqus_shortname = 'draffensperger';
+
+var enable_pjax = false;
+
+      // Pace Options
+      // ==============
+      window.paceOptions = {
+        catchupTime: 100,
+        minTime: 100,
+        elements: false,
+        restartOnRequestAfter: 500,
+        startOnPageLoad: false
+      }
+
+      // Ghostium Globals
+      // ==============
+      window.GHOSTIUM = {};
+      GHOSTIUM.haveGA = typeof ga_ua !== 'undefined' && ga_ua !== 'UA-XXXXX-X';
+      GHOSTIUM.haveDisqus = typeof disqus_shortname !== 'undefined' && disqus_shortname !== 'example';
+      GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
+    </script>
+
+    <script src="../assets/js/head-scripts.min.js?v=cc3ce6961d"></script>
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Dave Raffensperger">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Fuzzy Matching in PHP and Excel">
+    <meta property="og:description" content="I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.">
+    <meta property="og:url" content="https://davidraff.com/fuzzy-match-php-excel/">
+    <meta property="article:published_time" content="2013-10-26T23:59:00.000Z">
+    <meta property="article:modified_time" content="2016-03-04T00:42:45.000Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Fuzzy Matching in PHP and Excel">
+    <meta name="twitter:description" content="I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.">
+    <meta name="twitter:url" content="https://davidraff.com/fuzzy-match-php-excel/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Dave Raffensperger">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Dave Raffensperger",
+        "logo": "https://davidraff.com/content/images/2016/03/dave_head_280_90.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Dave Raffensperger",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "https://davidraff.com/author/dave/",
+        "sameAs": [],
+        "description": "Software engineer. Ruby, Go, JS, Java. Algorithms and productivity."
+    },
+    "headline": "Fuzzy Matching in PHP and Excel",
+    "url": "https://davidraff.com/fuzzy-match-php-excel/",
+    "datePublished": "2013-10-26T23:59:00.000Z",
+    "dateModified": "2016-03-04T00:42:45.000Z",
+    "description": "I wrote an Excel VBA function for algorithmic fuzzy matching based on my previous PHP code.",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://davidraff.com"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Dave Raffensperger" href="../rss/index.html">
+  </head>
+  <body class="post-template">
+
+    <button data-action="open-drawer" id="drawer-button" class="drawer-button"><i class="fa fa-bars"></i></button>
+<nav tabindex="-1" class="drawer">
+  <div class="drawer-container">
+    <!--.drawer-search(role="search")-->
+    <ul role="navigation" class="drawer-list">
+        <li class="drawer-list-item">
+    <a href="../" data-pjax>Blog Home</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../projects/" data-pjax>Projects</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../talks/" data-pjax>Talks</a>
+  </li>
+  <li class="drawer-list-divider">
+  <li class="drawer-list-item">
+    <a href="../papers/" data-pjax>Papers</a>
+  </li>
+  <li class="drawer-list-divider">
+
+<li class="drawer-list-item drawer-list-title">
+  Connect
+</li>
+<li class="drawer-list-item">
+  <a href="https://twitter.com/draffensperger" target="_blank">
+    <i class="fa fa-twitter"></i>Twitter
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="https://github.com/draffensperger" target="_blank">
+    <i class="fa fa-github"></i>Github
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="https://www.linkedin.com/in/draffensperger" target="_blank">
+    <i class="fa fa-linkedin"></i>LinkedIn
+  </a>
+</li>
+<li class="drawer-list-item">
+  <a href="http://careers.stackoverflow.com/draffensperger" target="_blank">
+    <i class="fa fa-stack-overflow"></i>StackOverflow Careers
+  </a>
+</li>
+<li class="drawer-list-item" id="contact">
+</li>
+<script>
+document.getElementById('contact').innerHTML = atob('PGEgaHJlZj0ibWFpbHRvOmQucmFmZmVuc3BlcmdlckBnbWFpbC5jb20iIHRhcmdldD0iX2JsYW5rIj48aSBjbGFzcz0iZmEgZmEtZW52ZWxvcGUiPjwvaT5kLnJhZmZlbnNwZXJnZXJAZ21haWwuY29tPC9hPg==');  		
+</script> 
+
+
+    </ul>
+  </div>
+</nav>
+
+    <div class="drawer-overlay"></div>
+    <main id="container" role="main" class="container">
+      <div class="surface">
+        <div class="surface-container">
+          <div data-pjax-container class="content">
+            
+<section class="wrapper wrapper-post">
+  <div class="wrapper-container">
+    <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post post">
+        <section class="post-container">
+          <header class="post-header">
+            <ul class="post-meta-list">
+              <li class="post-meta-item">
+                <time datetime="2013-10-26" itemprop="datePublished">
+                  3 years ago
+                </time>
+              </li>
+              <li class="post-meta-item">
+                <a href="index.html#disqus_thread" data-disqus-identifier="3">Comments</a>
+              </li>
+            </ul>
+            <h1 itemprop="name headline" class="post-title"><a href="index.html" itemprop="url" data-pjax title="Fuzzy Matching in PHP and Excel">Fuzzy Matching in PHP and Excel</a></h1>
+            <!--h2 itemprop="about" class="post-subtitle"></h2-->
+          </header>
+          <aside class="post-side">
+            <div class="post-author">
+                <a href="index.html" class="post-author-avatar">
+                  <img src="https://www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&amp;d=mm&amp;r=x" alt="Dave Raffensperger">
+                </a>
+              <div class="post-author-info">
+                <a href="index.html" class="post-author-name">
+                  Dave Raffensperger
+                </a>
+                <p class="post-author-bio">Software engineer. Ruby, Go, JS, Java. Algorithms and productivity.</p>
+              </div>
+            </div>
+          </aside>
+          <div itemprop="articleBody" class="post-body">
+            <p>This summer as part of a tutoring program in South Africa we needed to link <br>
+manually entered names and test scores with our master spreadsheet. I <br>
+<a href="https://gist.github.com/draffensperger/7176944">created an Excel VBA function</a> to match the names by combining exact search by full or first/last name and then using character count comparisons and Levenshtein distance to match misspelled names.</p>
+
+<script defer src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<figure style="float:right">  
+  <img class="img-responsive dark-border" src="../content/images/2016/03/kids_pretest.jpg" width="400" height="261" alt="Kids taking pre-test">
+  <figcaption>South African students taking the math pretest</figcaption>
+</figure>
+
+<p>The trip itself was amazing - our team of US college students got to partner with the <a href="http://mamelodi.org/">The Mamelodi Initiative</a> to tutor 8th-10th graders and in our free time we hung out with our African friends, discussed how the message of Jesus relates to serving others and had some awesome adventures!</p>
+
+<p>Each year the tutoring program has better tracked student achievement through pre- and post-tests. Part of my role was to help manage the program's data which for various reasons is stored in a large Excel spreadsheet.</p>
+
+<p>We had a volunteers help enter the math pretest names and scores in a separate spreadsheet (perhaps a mistake in retrospect). Misspellings between the score sheets and our master spreadsheet inevitably resulted as "Mahlemone" became "Molemone" and "Kgomotso" was entered as "Khomotso."</p>
+
+<p>I remembered that I had written <a href="https://github.com/draffensperger/memorizer/blob/master/test.php#L753">PHP code for string alignment and edit distance</a> which I used in a <a href="http://vocab-memorizer.herokuapp.com//test.php?MemorySetID=1">vocabulary training site</a> I wrote in college. The dynamic programming <a href="http://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm">Needleman-Wunsch algorithm</a> does the alignment and the resulting similarity metric is directly related to <a href="http://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a>.</p>
+
+<p>PHP alignment function excerpt (<a href="https://github.com/draffensperger/memorizer/blob/master/test.php#L753">full source</a>):  </p>
+
+<pre><code class="language-php">function getStringAlignment($str1, $str2) {  
+  // Set up variables and calculate edit distance matrix $D
+  ... 
+
+  // Main backtracking loop
+  while ($i &gt; 0 &amp;&amp; $j &gt; 0) {
+    $charSimilarity = char_similarity($str1[$i - 1], $str2[$j - 1]);
+    if ($D[$i][$j] - $charSimilarity == $D[$i - 1][$j - 1]) {
+      if ($charSimilarity &gt; 0) {
+        // A matched character
+        $align = 'M';                     
+      } else {
+        // A changed character
+        $align = 'C';
+      }            
+      $i--;
+      $j--;
+      $score += $charSimilarity;
+    } else if ($D[$i][$j] - $gap_score == $D[$i][$j - 1]) {
+      // Skipped in str2, i.e. str1 added it
+      $align = 'A';
+      $j--;
+      $score += $gap_score;
+    } else if ($D[$i][$j] - $gap_score == $D[$i - 1][$j]) {
+      // Skipped in str1, i.e. str1 deleted it
+      $align = 'D';
+      $i--;            
+      $score += $gap_score;   
+    }
+    $alignment = $align . $alignment;
+  }
+
+  // Record added or deleted letters for the rest of the unfinished string
+  ...
+
+  return array($alignment, $score);
+}
+</code></pre>
+
+<p>I <a href="https://gist.github.com/draffensperger/7176944#file-fuzzy_name_lookup-bas-L354">translated the algorithm to Excel VBA script</a> to compare the names for our tutoring program pretest. It worked great, but it was painfully slow to compare all 200 names in our test scores list with the 1000 or so names in our master sheet because the alignment algorithm takes <script type="math/tex">\operatorname{O}(length_{string1}length_{string2})</script> time while a simple string comparison takes <script type="math/tex">\operatorname{O}(min(length_{string1}, length_{string2}))</script> time.</p>
+
+<p>To speed up the matching overall, I had it try exact full name matches first <br>
+and then filter for exact first or last name matches. Then I had it do a simple unordered number of characters comparison to see if a name match was way off, and only if the number of characters was similar would it do the slower to compute Levenshtein distance comparison. I also had it try reversing first and last names as that sometimes happened in our data set.</p>
+
+<p>Here's an excerpt of the lookup loop, which calculates the edit <br>
+distance only when needed (<a href="https://gist.github.com/draffensperger/7176944#file-fuzzy_person_lookup-bas-L272">full source</a>):  </p>
+
+<pre><code class="language-vbnet">For i = firstRow To lastRow  
+    valInList = list.Cells(i, 1).Value
+
+    'For performance sake check the length, space location and unordered similarity first
+    'before running the edit distance algorithm
+    If Abs(Len(valInList) - Len(searchStr)) / Len(searchStr) _
+          &lt; LEN_RATIO_NOMATCH_THRESHOLD Then
+        If Abs(InStr(searchStr, " ") - InStr(valInList, " ")) / Len(searchStr) _
+              &lt; STR_LOC_NOMATCH_THRESHOLD Then
+            If UnorderedSimilarity(searchStr, valInList) / Len(searchStr) _
+                  &gt; UNORDERED_SIM_NOMATCH_THRESHOLD Then
+                sim = LevenshteinDistance(searchStr, valInList)
+                If sim &gt; maxSim Then
+                    maxSim = sim
+                    maxSimI = i
+                End If
+            End If
+        End If
+    End If
+Next  
+</code></pre>
+
+<p>After doing this, the majority of names matched and all I had to do manually <br>
+was sanity check them and fix a few here and there. It was a lot more fun <br>
+to do this as a programming exercise than to search for them one-by-one!</p>
+
+<p>There's also a StackOverflow post with some other <a href="http://stackoverflow.com/questions/4243036/levenshtein-distance-in-excel">Levenshtein distance implementations for Excel</a> with some speed tune-ups.</p>
+          </div>
+          <footer class="post-footer">
+            <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
+                <a href="index.html" class="post-author-avatar">
+                  <img itemprop="image" src="https://www.gravatar.com/avatar/d0cf04426ece49f04d66ace0150c42c8?s=250&amp;d=mm&amp;r=x" alt="Dave Raffensperger">
+                </a>
+              <div class="post-author-info">
+                <h4 class="post-footer-heading">Written By</h4>
+                <a href="index.html" itemprop="url" class="post-author-name">
+                  <span itemprop="name">Dave Raffensperger</span>
+                </a>
+                <p itemprop="description" class="post-author-bio">Software engineer. Ruby, Go, JS, Java. Algorithms and productivity.</p>
+                <p class="post-info">
+                  <b class="post-info-title">Published on</b>
+                  <time class="post-date">October 26, 2013</time>
+                </p>
+              </div>
+            </div>
+            <div class="post-social">
+              <h4 class="post-footer-heading">Spread the word</h4>
+              <a href="index.html#" data-action="share-twitter"><i class="fa fa-fw fa-lg fa-twitter"></i></a>
+              <a href="index.html#" data-action="share-facebook"><i class="fa fa-fw fa-lg fa-facebook"></i></a>
+              <a href="index.html#" data-action="share-gplus"><i class="fa fa-fw fa-lg fa-google-plus"></i></a>
+            </div>
+          </footer>
+        </section>
+      <section itemprop="comment" class="post-comments">
+        <div id="disqus_thread"></div>
+      </section>
+    </article>
+
+    <footer role="contentinfo" class="footer">
+  <p><small>© 2016 Dave Raffensperger.
+  <a href="http://ghostium.oswaldoacauan.com/" target="_blank">Ghostium Theme</a> 
+  by <a href="http://twitter.com/oswaldoacauan" target="_blank">@oswaldoacauan</a>.
+  Proudly published with <a href="http://ghost.org" target="_blank">Ghost</a>.</small></p>
+</footer>
+  </div>
+</section>
+
+<script type="text/javascript">
+  if(GHOSTIUM.haveDisqus) {
+    var disqus_identifier = '3';
+
+    if(typeof DISQUS !== 'object') {
+      (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    }
+  } else {
+    document.querySelector('.post-comments').remove();
+  }
+</script>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    
+
+    <script src="../assets/js/foot-scripts.min.js?v=cc3ce6961d"></script>
+
+    <script type="text/javascript">
+
+      if(GHOSTIUM.haveGA) {
+        (function(g,h,o,s,t,z){g.GoogleAnalyticsObject=s;g[s]||(g[s]=
+        function(){(g[s].q=g[s].q||[]).push(arguments)});g[s].s=+new Date;
+        t=h.createElement(o);z=h.getElementsByTagName(o)[0];
+        t.src='//www.google-analytics.com/analytics.js';
+        z.parentNode.insertBefore(t,z)}(window,document,'script','ga'));
+        ga('create',ga_ua);ga('send','pageview');
+      }
+
+      if(GHOSTIUM.haveDisqus) {
+        (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+      }
+    </script>
+  </body>
